@@ -164,15 +164,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Sticky header class toggle
-  const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header?.classList.add('scrolled');
-    } else {
-      header?.classList.remove('scrolled');
+  // Sticky Header Measurement & Dynamic Offset Handling
+  const siteHeader = document.querySelector('.site-header');
+  function updateStickyHeader() {
+    if (siteHeader) {
+      const h = siteHeader.offsetHeight;
+      document.documentElement.style.setProperty('--site-header-h', `${h}px`);
     }
-  });
+  }
+  updateStickyHeader();
+  window.addEventListener('resize', updateStickyHeader, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 30) {
+      siteHeader?.classList.add('scrolled');
+    } else {
+      siteHeader?.classList.remove('scrolled');
+    }
+    updateStickyHeader();
+  }, { passive: true });
+
+  // ScrollSpy for Project Detail In-Page Navigation (.pdetail-subnav)
+  const subnavLinks = document.querySelectorAll('.pdetail-subnav-link');
+  if (subnavLinks.length > 0) {
+    const sections = [];
+    subnavLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const sec = document.querySelector(href);
+        if (sec) sections.push({ link, sec, id: href });
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      const headerH = siteHeader ? siteHeader.offsetHeight : 70;
+      const scrollPos = window.scrollY + headerH + 65;
+      let currentLink = null;
+
+      sections.forEach(({ link, sec }) => {
+        const top = sec.offsetTop;
+        const height = sec.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentLink = link;
+        }
+      });
+
+      if (currentLink) {
+        subnavLinks.forEach(l => l.classList.remove('active'));
+        currentLink.classList.add('active');
+
+        // Auto-center active subnav link on mobile devices
+        const subnavList = document.querySelector('.pdetail-subnav-list');
+        if (subnavList) {
+          const linkLeft = currentLink.offsetLeft;
+          const linkWidth = currentLink.offsetWidth;
+          const listWidth = subnavList.offsetWidth;
+          if (linkLeft < subnavList.scrollLeft || linkLeft + linkWidth > subnavList.scrollLeft + listWidth) {
+            subnavList.scrollTo({
+              left: linkLeft - (listWidth / 2) + (linkWidth / 2),
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    }, { passive: true });
+  }
 
   // FAQ Accordion Toggle
   const faqItems = document.querySelectorAll('.faq-item');

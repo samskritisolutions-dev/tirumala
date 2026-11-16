@@ -1,3 +1,23 @@
+
+:root {
+  --site-header-h: 76px;
+}
+
+@media (max-width: 991px) {
+  :root {
+    --site-header-h: 60px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--site-header-h, 76px) + 54px);
+}
+
+section[id], div[id="overview"], div[id="site-visit-form"] {
+  scroll-margin-top: calc(var(--site-header-h, 76px) + 54px);
+}
+
 /* ==========================================================================
    THIRUMALA CONSTRUCTIONS & DEVELOPERS (Tirumala Nirmaan)
    Modern Luxury Real Estate Master Stylesheet (Clean Flat Modern UX)
@@ -111,7 +131,7 @@ body {
   color: var(--text);
   font-size: 16px;
   line-height: 1.7;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.01em;
 }
@@ -564,15 +584,32 @@ p,
 
 /* Main Navbar (Sticky Header with Soft Floating Shadow) */
 .site-header {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
   background: #ffffff;
   z-index: 1000;
   border: none !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
-  transition: var(--transition);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12) !important;
+}
+
+.site-header.scrolled .navbar {
+  padding: 0.55rem 0;
+}
+
+.site-header.scrolled .brand-logo img {
+  height: 46px;
 }
 
 .navbar {
@@ -2906,643 +2943,19 @@ form[data-ajax="lead"] button[type="submit"]:hover {
 
 /* Sticky In-Page Navigation Bar */
 .pdetail-subnav {
+  position: -webkit-sticky;
   position: sticky;
-  top: 72px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 900;
-  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-.pdetail-subnav-list {
-  display: flex;
-  align-items: center;
-  gap: 1.75rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 0.85rem 0;
-  scrollbar-width: none;
-}
-
-.pdetail-subnav-list::-webkit-scrollbar {
-  display: none;
-}
-
-.pdetail-subnav-link {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--third);
-  text-decoration: none;
-  padding: 0.35rem 0;
-  position: relative;
-  transition: color 0.2s ease;
-}
-
-.pdetail-subnav-link:hover,
-.pdetail-subnav-link.active {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.pdetail-subnav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -0.85rem;
+  top: var(--site-header-h, 76px);
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--secondary);
-  border-radius: 2px 2px 0 0;
-}
-
-/* Snapshot Matrix / Quick Facts */
-.pdetail-snapshot-card {
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  padding: 2.25rem 2rem;
-  box-shadow: var(--shadow-md);
-  border: none !important;
-}
-
-.pdetail-facts-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-@media (min-width: 480px) {
-  .pdetail-facts-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .pdetail-facts-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-.pdetail-fact-box {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 1rem;
-  border-radius: var(--radius-md);
-  background: var(--bg-body);
-}
-
-.pdetail-fact-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: rgba(16, 43, 123, 0.08);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-}
-
-.pdetail-fact-meta {
-  display: flex;
-  flex-direction: column;
-}
-
-.pdetail-fact-title {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-  margin-bottom: 2px;
-}
-
-.pdetail-fact-value {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--third);
-}
-
-/* Curated Amenity Cards */
-.amenities-luxury-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-
-@media (min-width: 480px) {
-  .amenities-luxury-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 992px) {
-  .amenities-luxury-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-.amenity-lux-card {
-  background: #ffffff;
-  padding: 1.75rem 1.5rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  border: none !important;
-}
-
-.amenity-lux-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-}
-
-.amenity-lux-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: rgba(242, 169, 0, 0.12);
-  color: #B27B00;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  margin-bottom: 0.25rem;
-}
-
-.amenity-lux-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--third);
-  margin: 0;
-}
-
-.amenity-lux-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.55;
-  margin: 0;
-}
-
-/* Floor Plans Showcase */
-.floorplans-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .floorplans-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-}
-
-.floorplan-lux-card {
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border: none !important;
-  display: flex;
-  flex-direction: column;
-}
-
-.floorplan-lux-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-hover);
-}
-
-.floorplan-header {
-  padding: 1.5rem 1.75rem;
-  background: linear-gradient(135deg, #091738 0%, #102B7B 100%);
-  color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.floorplan-type {
-  font-size: 1.35rem;
-  font-weight: 600;
-}
-
-.floorplan-badge {
-  background: var(--secondary);
-  color: #000000;
-  font-weight: 600;
-  font-size: 0.75rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-full);
-}
-
-.floorplan-body {
-  padding: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.floorplan-blueprint-wireframe {
-  height: 180px;
-  background: #f8fafc;
-  border-radius: var(--radius-md);
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  text-align: center;
-  color: var(--primary);
-  border: 1px dashed rgba(16, 43, 123, 0.25);
-}
-
-.floorplan-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-  margin-bottom: 1.5rem;
-}
-
-.fp-metric-item {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-body);
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-}
-
-.fp-metric-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.fp-metric-val {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--third);
-}
-
-/* Master Civil Engineering Specifications */
-.specs-luxury-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-
-@media (min-width: 640px) {
-  .specs-luxury-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .specs-luxury-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.spec-lux-card {
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  padding: 1.75rem 1.5rem;
-  box-shadow: var(--shadow-sm);
-  border: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.spec-lux-header {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.spec-lux-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: rgba(16, 43, 123, 0.08);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
-
-.spec-lux-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--third);
-  margin: 0;
-}
-
-.spec-lux-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.spec-lux-list li {
-  font-size: 14.5px;
-  color: #4B5563;
-  line-height: 1.55;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-}
-
-.spec-lux-list li i {
-  color: var(--secondary);
-  font-size: 0.85rem;
-  margin-top: 4px;
-  flex-shrink: 0;
-}
-
-
-
-/* ==========================================================================
-   Project Detail Pages (Glentree Onyx Inspired Luxury UX)
-   ========================================================================== */
-
-.pdetail-hero {
-  position: relative;
-  background: linear-gradient(135deg, #061129 0%, #0d2568 100%);
-  color: #ffffff;
-  padding: 4rem 0 5rem;
-  overflow: hidden;
-  border: none !important;
-}
-
-.pdetail-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.pdetail-breadcrumb a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.pdetail-breadcrumb a:hover {
-  color: var(--secondary);
-}
-
-.pdetail-breadcrumb span {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.pdetail-breadcrumb i {
-  font-size: 0.65rem;
-  color: var(--secondary);
-}
-
-.pdetail-hero-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-@media (min-width: 992px) {
-  .pdetail-hero-grid {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 3.5rem;
-  }
-}
-
-.pdetail-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  background: rgba(242, 169, 0, 0.22);
-  color: #FFC024 !important;
-  padding: 0.45rem 1.15rem;
-  border-radius: var(--radius-full);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-  border: 1px solid rgba(242, 169, 0, 0.45) !important;
-}
-
-.pdetail-hero-title {
-  font-size: 3.4rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  line-height: 1.15 !important;
-  margin-bottom: 0.95rem !important;
-  letter-spacing: -0.01em !important;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.45) !important;
-}
-
-@media (max-width: 768px) {
-  .pdetail-hero-title {
-    font-size: 2.35rem !important;
-  }
-}
-
-.pdetail-hero-subtitle {
-  font-size: 1.22rem !important;
-  color: #E2E8F0 !important;
-  line-height: 1.6 !important;
-  margin-bottom: 2.25rem !important;
-  font-weight: 400 !important;
-}
-
-/* Luxury Glass Stats Cards in Detail Hero */
-.pdetail-hero-stats-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.95rem;
-  margin-bottom: 2.25rem;
-}
-
-@media (min-width: 768px) {
-  .pdetail-hero-stats-cards {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-}
-
-.pdetail-stat-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  border-radius: 12px;
-  padding: 0.85rem 1.15rem;
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-}
-
-.pdetail-stat-card:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(242, 169, 0, 0.5) !important;
-  transform: translateY(-2px);
-}
-
-.pdetail-stat-card-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: rgba(242, 169, 0, 0.2);
-  color: #FFC024;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-}
-
-.pdetail-stat-card-content {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.pdetail-stat-card-label {
-  font-size: 0.72rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: rgba(255, 255, 255, 0.78) !important;
-  font-weight: 600 !important;
-  margin-bottom: 2px !important;
-}
-
-.pdetail-stat-card-val {
-  font-size: 1.05rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  line-height: 1.3 !important;
-}
-
-.pdetail-stat-card-val.val-gold {
-  color: #F2A900 !important;
-}
-
-.pdetail-hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.pdetail-hero-actions .btn-secondary {
-  background: var(--secondary) !important;
-  color: #000000 !important;
-  font-weight: 600 !important;
-  padding: 1rem 2rem !important;
-  font-size: 1.05rem !important;
-  box-shadow: 0 8px 24px rgba(242, 169, 0, 0.35) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.65rem !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.pdetail-hero-actions .btn-secondary:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 12px 28px rgba(242, 169, 0, 0.45) !important;
-}
-
-.pdetail-hero-actions .btn-outline-white {
-  background: #ffffff !important;
-  color: var(--primary) !important;
-  font-weight: 600 !important;
-  padding: 1rem 2rem !important;
-  font-size: 1.05rem !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.65rem !important;
-  transition: transform 0.2s ease, background 0.2s ease !important;
-}
-
-.pdetail-hero-actions .btn-outline-white i {
-  color: var(--primary) !important;
-}
-
-.pdetail-hero-actions .btn-outline-white:hover {
-  background: var(--bg-body) !important;
-  transform: translateY(-2px) !important;
-}
-
-.pdetail-hero-media {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  height: 440px;
-  background: #11224D;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.pdetail-hero-media img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.pdetail-hero-tag {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  background: rgba(7, 19, 48, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.6rem 1.15rem;
-  border-radius: var(--radius-md);
-  color: #ffffff;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: var(--shadow-sm);
-}
-
-/* Sticky In-Page Navigation Bar */
-.pdetail-subnav {
-  position: sticky;
-  top: 72px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 900;
-  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  z-index: 950;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+  border-bottom: 2px solid rgba(16, 43, 123, 0.08);
+  transition: top 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pdetail-subnav-list {
@@ -3904,7 +3317,6 @@ form[data-ajax="lead"] button[type="submit"]:hover {
   margin-top: 4px;
   flex-shrink: 0;
 }
-
 
 
 
@@ -4052,7 +3464,7 @@ form[data-ajax="lead"] button[type="submit"]:hover {
 
 /* 1. Global Container & Overflow Protection */
 html, body {
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
   max-width: 100vw;
 }
 
@@ -4159,7 +3571,7 @@ html, body {
   }
 
   .pdetail-subnav {
-    top: 66px !important;
+    top: var(--site-header-h, 60px) !important;
   }
 
   .pdetail-subnav-list {
