@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects Portfolio | Thirumala Constructions & Developers</title>
+  <meta name="description" content="Explore ongoing and delivered real estate projects by Thirumala Constructions & Developers (Tirumala Nirmaan) across Hyderabad: Nagole, Peerzadiguda, Uppal, Boduppal, and Ameerpet.">
+  
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=4.4">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-inner">
+        <div class="top-bar-left">
+          <span class="top-bar-item"><i class="fa-solid fa-location-dot"></i> Peerzadiguda, Hyderabad, Telangana</span>
+          <a href="tel:+919849306675" class="top-bar-item"><i class="fa-solid fa-phone"></i> +91 98493 06675</a>
+          <a href="mailto:thirumalacd2010@gmail.com" class="top-bar-item"><i class="fa-solid fa-envelope"></i> thirumalacd2010@gmail.com</a>
+        </div>
+        <div class="top-bar-right">
+          <a href="contact.html" class="top-bar-item" style="text-decoration: underline;">
+            <i class="fa-regular fa-calendar-check"></i> Schedule Site Visit
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="brand-logo">
+          <img src="images/logo.svg" alt="Tirumala Nirmaan - Thirumala Constructions & Developers Logo">
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="projects.html" class="nav-link active">Projects</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="index.html#emi-calc" class="nav-link">EMI Calculator</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+          <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm"><i class="fa-regular fa-calendar-check"></i> Schedule Visit</a>
+          <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close Menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div style="margin-bottom: 1.5rem;">
+      <img src="images/logo.svg" alt="Logo" style="height: 50px;">
+      <h3 style="font-size: 1.1rem; color: var(--primary); margin-top: 0.5rem;">THIRUMALA CONSTRUCTIONS</h3>
+      <p style="font-size: 0.75rem; color: var(--secondary); font-weight: 700;">STRONG FOUNDATIONS. LASTING HOMES.</p>
+    </div>
+    <div class="mobile-nav-list">
+      <a href="index.html" class="mobile-nav-link">Home</a>
+      <a href="about.html" class="mobile-nav-link">About Us</a>
+      <a href="projects.html" class="mobile-nav-link active">Projects Showcase</a>
+      <a href="services.html" class="mobile-nav-link">Our Services</a>
+      <a href="index.html#emi-calc" class="mobile-nav-link">EMI Calculator</a>
+      <a href="contact.html" class="mobile-nav-link">Contact & Location</a>
+    </div>
+    <div style="margin-top: auto; padding-top: 1.5rem; border: none;">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Quick Assistance:</p>
+      <a href="tel:+919849306675" class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 0.5rem;">
+        <i class="fa-solid fa-phone"></i> Call +91 98493 06675
+      </a>
+      <a href="https://wa.me/919849306675?text=Hello%20Thirumala%20Constructions,%20I%20am%20interested%20in%20your%20properties" target="_blank" class="btn btn-accent btn-sm" style="width: 100%;">
+        <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+      </a>
+    </div>
+  </aside>
+
+  <!-- Page Banner -->
+  <section class="page-banner">
+    <div class="container">
+      <h1 class="font-display">Our Real Estate Portfolio</h1>
+      <div class="breadcrumb-nav">
+        <a href="index.html">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i>
+        <span>Projects (Ongoing & Landmark Completed)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Filter & Showcase -->
+  <section class="projects-section">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-tag">Explore By Category</span>
+        <h2 class="section-title font-display">Discover Your Ideal Property</h2>
+        <p class="section-subtitle mx-auto">
+          Filter through our active developments, delivered gated apartment towers, independent housing enclaves, and commercial spaces across Hyderabad.
+        </p>
+
+        <!-- Filter Controls -->
+        <div class="filter-tabs">
+          <button class="filter-btn active" data-filter="all">All Projects (16)</button>
+          <button class="filter-btn" data-filter="ongoing">Ongoing Projects (3)</button>
+          <button class="filter-btn" data-filter="completed">Completed Landmarks (13)</button>
+          <button class="filter-btn" data-filter="apartments">Apartments</button>
+          <button class="filter-btn" data-filter="independent">Independent Houses</button>
+          <button class="filter-btn" data-filter="commercial">Commercial Complexes</button>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid">
+        
+        <!-- ================= ONGOING PROJECTS ================= -->
+
+        <!-- Project 1: SV Heights, Nagole -->
+        <article class="project-card" data-category="apartments" data-status="ongoing" id="sv-heights">
+          <div class="project-thumb">
+            <span class="project-status status-ongoing">Ongoing / Booking Open</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/sv-heights.jpg" alt="SV Heights Nagole">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Nagole, Hyderabad</div>
+            <h3 class="project-name">SV Heights</h3>
+            <p class="project-desc">
+              Architecturally designed luxury apartments situated minutes from Nagole Metro Station. Features grand entrance lobby, automatic high-speed elevators, CCTV surveillance, and 100% Vastu compliance.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Config</div><div class="spec-val">2 & 3 BHK</div></div>
+              <div class="spec-item"><div class="spec-label">Area</div><div class="spec-val">1150-1650 sft</div></div>
+              <div class="spec-item"><div class="spec-label">Elevators</div><div class="spec-val">Automatic</div></div>
+            </div>
+            <div class="project-footer">
+              <a href="project-sv-heights.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-circle-info"></i> Project Details</a>
+              <a href="contact.html?project=SV%20Heights#site-visit-form" class="btn btn-secondary btn-sm"><i class="fa-regular fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2: SSV Padma Heights, Peerzadiguda -->
+        <article class="project-card" data-category="apartments" data-status="ongoing" id="padma-heights">
+          <div class="project-thumb">
+            <span class="project-status status-ongoing">Under Active Construction</span>
+            <span class="project-category">Gated Apartments</span>
+            <img src="images/projects/ssv-padma-heights.jpg" alt="SSV Padma Heights Peerzadiguda">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Peerzadiguda, Near Uppal Depot</div>
+            <h3 class="project-name">SSV Padma Heights</h3>
+            <p class="project-desc">
+              An iconic residential enclave in the rapidly expanding Peerzadiguda hub. Thoughtfully planned with generous natural light, acoustic privacy, solar lighting for common areas, and EV charging points.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Floors</div><div class="spec-val">G + 5 Floors</div></div>
+              <div class="spec-item"><div class="spec-label">Parking</div><div class="spec-val">Covered</div></div>
+              <div class="spec-item"><div class="spec-label">Backup</div><div class="spec-val">Generator</div></div>
+            </div>
+            <div class="project-footer">
+              <a href="project-ssv-padma-heights.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-circle-info"></i> Project Details</a>
+              <a href="contact.html?project=SSV%20Padma%20Heights#site-visit-form" class="btn btn-secondary btn-sm"><i class="fa-regular fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3: SSV Krishna Heights, Parvathapur -->
+        <article class="project-card" data-category="apartments" data-status="ongoing" id="krishna-heights">
+          <div class="project-thumb">
+            <span class="project-status status-ongoing">Ongoing Development</span>
+            <span class="project-category">Residential Enclave</span>
+            <img src="images/projects/thirumala-modern.jpg" alt="SSV Krishna Heights Parvathapur">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Parvathapur, Peerzadiguda</div>
+            <h3 class="project-name">SSV Krishna Heights</h3>
+            <p class="project-desc">
+              Nestled in a peaceful residential neighborhood offering tranquil suburban living with zero compromise on urban access. Proximity to international schools, shopping zones, and Warangal Highway.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Config</div><div class="spec-val">2 & 3 BHK</div></div>
+              <div class="spec-item"><div class="spec-label">Structure</div><div class="spec-val">Seismic RCC</div></div>
+              <div class="spec-item"><div class="spec-label">Loan</div><div class="spec-val">All Major Banks</div></div>
+            </div>
+            <div class="project-footer">
+              <a href="project-ssv-krishna-heights.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-circle-info"></i> Project Details</a>
+              <a href="contact.html?project=SSV%20Krishna%20Heights#site-visit-form" class="btn btn-secondary btn-sm"><i class="fa-regular fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- ================= COMPLETED LANDMARKS (13 PROJECTS) ================= -->
+
+        <!-- Project 4: SV's Manik Arcade (Ameerpet) -->
+        <article class="project-card" data-category="commercial apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Commercial & Retail</span>
+            <img src="images/projects/sv-manik-arcade.jpg" alt="SV's Manik Arcade Ameerpet">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Bulkampet, Ameerpet</div>
+            <h3 class="project-name">SV's Manik Arcade</h3>
+            <p class="project-desc">
+              A high-density commercial and residential development in central Hyderabad. Housing established retailers, clinics, and modern residences.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">100% Sold</div></div>
+              <div class="spec-item"><div class="spec-label">Zone</div><div class="spec-val">Central Hyd</div></div>
+              <div class="spec-item"><div class="spec-label">Type</div><div class="spec-val">Mixed Use</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Landmark Success</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Similar Venture</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 5: Keshav's Thirumala Residency (Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/keshav-residency.jpg" alt="Keshav's Thirumala Residency">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Chilakanagar, Boduppal</div>
+            <h3 class="project-name">Keshav's Thirumala Residency</h3>
+            <p class="project-desc">
+              Twin residential towers featuring spacious balconies, manicured ground landscaping, wide driveways, and independent car parking bays.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Units</div><div class="spec-val">Multi-Tower</div></div>
+              <div class="spec-item"><div class="spec-label">Vastu</div><div class="spec-val">100% Vastu</div></div>
+              <div class="spec-item"><div class="spec-label">Handover</div><div class="spec-val">Completed</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Satisfied Residents</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Enquire Area</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 6: 60 Independent Houses (Balaji Hills) -->
+        <article class="project-card" data-category="independent" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Independent Houses</span>
+            <img src="images/projects/independent-houses.jpg" alt="60 Independent Houses">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Balaji Hills & Rajeshekar Colony</div>
+            <h3 class="project-name">60 Independent Houses</h3>
+            <p class="project-desc">
+              A comprehensive residential enclave of 60 individual houses crafted to client blueprints, highlighting exceptional structural masonry and aesthetic elevation finish.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Count</div><div class="spec-val">60 Villas</div></div>
+              <div class="spec-item"><div class="spec-label">Type</div><div class="spec-val">G+1 / G+2</div></div>
+              <div class="spec-item"><div class="spec-label">Design</div><div class="spec-val">Custom Built</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Master Enclave</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Build My Home</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 7: D-Mart Commercial Complex (Ramanthapur) -->
+        <article class="project-card" data-category="commercial" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Retail Landmark</span>
+            <img src="images/projects/sudhakar-building.jpg" alt="D-Mart Ramanthapur">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Ramanthapur Main Road</div>
+            <h3 class="project-name">D-Mart Commercial Complex</h3>
+            <p class="project-desc">
+              Large-format retail building engineered for heavy footfalls, expansive unhindered column spans, massive parking aprons, and multi-tier loading infrastructure.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Client</div><div class="spec-val">Retail Giant</div></div>
+              <div class="spec-item"><div class="spec-label">Location</div><div class="spec-val">Prime Hub</div></div>
+              <div class="spec-item"><div class="spec-label">Engineering</div><div class="spec-val">Heavy-Load</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> High-Street Commercial</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Develop Land</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 8: Thirumala Towers (Indira Nagar, Ramanthapur) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/thirumala-modern.jpg" alt="Thirumala Towers Ramanthapur">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Indira Nagar, Ramanthapur</div>
+            <h3 class="project-name">Thirumala Towers</h3>
+            <p class="project-desc">
+              Sturdy residential apartment development setting the benchmark for construction quality and timely delivery in the Ramanthapur corridor.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Location</div><div class="spec-val">Indira Nagar</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Occupied</div></div>
+              <div class="spec-item"><div class="spec-label">Pillars</div><div class="spec-val">Strong RCC</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Fully Handed Over</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire Similar</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 9: Thirumala Apartments (Balaji Hills, Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/keshav-aerial.jpg" alt="Thirumala Apartments Balaji Hills">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Balaji Hills, Boduppal</div>
+            <h3 class="project-name">Thirumala Apartments</h3>
+            <p class="project-desc">
+              Elevated residential apartments overlooking tranquil surroundings in Balaji Hills, offering easy commute to Uppal Junction and Uppal Ring Road.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Setting</div><div class="spec-val">Hilltop View</div></div>
+              <div class="spec-item"><div class="spec-label">Security</div><div class="spec-val">24/7 Gated</div></div>
+              <div class="spec-item"><div class="spec-label">Water</div><div class="spec-val">Abundant</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Completed</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 10: Thirumala Towers (Medipally) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/sv-heights-aerial.jpg" alt="Thirumala Towers Medipally">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Medipally, Hyderabad</div>
+            <h3 class="project-name">Thirumala Towers (Medipally)</h3>
+            <p class="project-desc">
+              Contemporary urban residences engineered along the booming NH 163 Warangal Highway belt, popular with IT professionals and business executives.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Highway</div><div class="spec-val">NH 163</div></div>
+              <div class="spec-item"><div class="spec-label">Finish</div><div class="spec-val">Premium</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Handed Over</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 11: Thirumala Towers (Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/sv-heights.jpg" alt="Thirumala Towers Boduppal">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Boduppal, Hyderabad</div>
+            <h3 class="project-name">Thirumala Towers (Boduppal)</h3>
+            <p class="project-desc">
+              Spacious multi-family residences featuring optimal carpet area ratios, wide utility spaces, and durable exterior paint treatments.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Corridor</div><div class="spec-val">Boduppal</div></div>
+              <div class="spec-item"><div class="spec-label">Airflow</div><div class="spec-val">Cross-Vent</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Delivered</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 12: Hasini Enclave (Chilakanagar, Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/keshav-residency.jpg" alt="Hasini Enclave Boduppal">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Chilakanagar, Boduppal</div>
+            <h3 class="project-name">Hasini Enclave</h3>
+            <p class="project-desc">
+              Quiet neighborhood gated apartments built with clear titles and municipal permissions, offering families an exceptional quality of life.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Type</div><div class="spec-val">Residential</div></div>
+              <div class="spec-item"><div class="spec-label">Approval</div><div class="spec-val">Sanctioned</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Completed</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 13: Kesava Residency (Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/thirumala-modern.jpg" alt="Kesava Residency Boduppal">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Boduppal, Hyderabad</div>
+            <h3 class="project-name">Kesava Residency</h3>
+            <p class="project-desc">
+              Comfortable, well-designed 2 & 3 BHK flats featuring reliable borewell & municipal water connections, power backup, and intercom facility.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Structure</div><div class="spec-val">RCC</div></div>
+              <div class="spec-item"><div class="spec-label">Power</div><div class="spec-val">Full Backup</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Completed</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 14: Sagar Simha Nilayam (Yapral) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/thirumala-modern.jpg" alt="Sagar Simha Nilayam Yapral">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Yapral, Secunderabad Belt</div>
+            <h3 class="project-name">Sagar Simha Nilayam</h3>
+            <p class="project-desc">
+              A serene residential community constructed in Yapral, offering peaceful military cantonment proximity, lush tree canopies, and excellent connectivity.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Area</div><div class="spec-val">Yapral Hub</div></div>
+              <div class="spec-item"><div class="spec-label">Security</div><div class="spec-val">Gated</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Delivered</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 15: Thirumala Heights (Swaroop Nagar, Uppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/sv-heights.jpg" alt="Thirumala Heights Uppal">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Swaroop Nagar, Uppal</div>
+            <h3 class="project-name">Thirumala Heights</h3>
+            <p class="project-desc">
+              Strategic high-rise apartment complex situated close to Rajiv Gandhi International Cricket Stadium and Uppal Metro Terminal.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Metro</div><div class="spec-val">5 Mins</div></div>
+              <div class="spec-item"><div class="spec-label">Stadium</div><div class="spec-val">Nearby</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Delivered</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 16: Kesava Residency (Near NTR Statue, Boduppal) -->
+        <article class="project-card" data-category="apartments" data-status="completed">
+          <div class="project-thumb">
+            <span class="project-status status-completed">Delivered</span>
+            <span class="project-category">Apartments</span>
+            <img src="images/projects/keshav-residency.jpg" alt="Kesava Residency Near NTR Statue">
+          </div>
+          <div class="project-body">
+            <div class="project-location"><i class="fa-solid fa-location-dot"></i> Near NTR Statue, Boduppal</div>
+            <h3 class="project-name">Kesava Residency (NTR Circle)</h3>
+            <p class="project-desc">
+              Prime central Boduppal apartment building providing immediate access to banks, supermarkets, bus stands, and primary healthcare clinics.
+            </p>
+            <div class="project-specs">
+              <div class="spec-item"><div class="spec-label">Landmark</div><div class="spec-val">NTR Statue</div></div>
+              <div class="spec-item"><div class="spec-label">Access</div><div class="spec-val">Main Road</div></div>
+              <div class="spec-item"><div class="spec-label">Status</div><div class="spec-val">Delivered</div></div>
+            </div>
+            <div class="project-footer">
+              <span class="badge-success-soft"><i class="fa-solid fa-check"></i> Delivered</span>
+              <a href="contact.html#site-visit-form" class="btn btn-secondary btn-sm">Inquire</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2 class="font-display">Need Custom Blueprints or Joint Venture Development?</h2>
+      <p>Have land for development or need a dedicated civil contracting partner in Hyderabad? Contact our technical team today.</p>
+      <div class="contact-quick-strip">
+        <a href="tel:+919849306675" class="btn btn-secondary"><i class="fa-solid fa-phone"></i> +91 98493 06675</a>
+        <a href="contact.html" class="btn btn-white"><i class="fa-regular fa-envelope"></i> Send Land Proposal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: About & Logo -->
+        <div class="footer-col">
+          <div style="margin-bottom: 1.15rem;">
+            <div style="color: #fff; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.01em; line-height: 1.2;">THIRUMALA</div>
+            <div style="color: var(--secondary); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px;">CONSTRUCTIONS & DEVELOPERS</div>
+          </div>
+          <p class="footer-desc">
+            Promoted by G V Sudhakara Rao (B.Tech Civil) & G Prashanthi. Over a decade of benchmark civil construction, building enduring communities across Hyderabad with honest value for money.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <a href="https://wa.me/919849306675" target="_blank" class="btn btn-outline-white btn-sm" style="padding: 0.4rem 0.8rem;">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="tel:+919849306675" class="btn btn-outline-white btn-sm" style="padding: 0.4rem 0.8rem;">
+              <i class="fa-solid fa-phone"></i> Direct Call
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+            <li><a href="about.html" class="footer-link"><i class="fa-solid fa-angle-right"></i> About Leadership</a></li>
+            <li><a href="projects.html" class="footer-link"><i class="fa-solid fa-angle-right"></i> Completed Projects (13)</a></li>
+            <li><a href="projects.html#ongoing" class="footer-link"><i class="fa-solid fa-angle-right"></i> Ongoing Projects (3)</a></li>
+            <li><a href="services.html" class="footer-link"><i class="fa-solid fa-angle-right"></i> Construction Services</a></li>
+            <li><a href="index.html#emi-calc" class="footer-link"><i class="fa-solid fa-angle-right"></i> Home Loan EMI Calculator</a></li>
+            <li><a href="contact.html" class="footer-link"><i class="fa-solid fa-angle-right"></i> Contact & Office</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Property Types -->
+        <div class="footer-col">
+          <h4>Our Offerings</h4>
+          <ul class="footer-links">
+            <li><a href="projects.html?type=apartments" class="footer-link"><i class="fa-solid fa-angle-right"></i> Luxury Gated Apartments</a></li>
+            <li><a href="projects.html?type=villas" class="footer-link"><i class="fa-solid fa-angle-right"></i> Gated Villa Enclaves</a></li>
+            <li><a href="projects.html?type=independent" class="footer-link"><i class="fa-solid fa-angle-right"></i> Custom Independent Houses</a></li>
+            <li><a href="projects.html?type=plots" class="footer-link"><i class="fa-solid fa-angle-right"></i> HMDA Approved Open Plots</a></li>
+            <li><a href="services.html#contracting" class="footer-link"><i class="fa-solid fa-angle-right"></i> Civil Turnkey Contracting</a></li>
+            <li><a href="services.html#materials" class="footer-link"><i class="fa-solid fa-angle-right"></i> Building Material Supply</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Corporate Contact -->
+        <div class="footer-col">
+          <h4>Registered Office</h4>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>H No. 1-17/2, 4th Floor, Above ICICI Bank, Near Uppal Depot, Peerzadiguda, Medipally (M), Medchal-Malkajgiri District - 500039, Hyderabad, Telangana.</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:+919849306675" style="color: inherit;">+91 98493 06675</a>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:thirumalacd2010@gmail.com" style="color: inherit;">thirumalacd2010@gmail.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-clock"></i>
+            <span>Mon - Sat: 9:30 AM - 7:30 PM <br>Sunday: By Appointment</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 <strong>Thirumala Constructions & Developers</strong> (Tirumala Nirmaan). All Rights Reserved.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="contact.html" style="color: inherit;">Privacy Policy</a>
+          <a href="contact.html" style="color: inherit;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp & Call -->
+  <div class="floating-actions">
+    <a href="https://wa.me/919849306675?text=Hello%20Thirumala%20Constructions,%20I%20am%20interested%20in%20your%20projects" target="_blank" class="float-btn float-whatsapp">
+      <i class="fa-brands fa-whatsapp fa-xl"></i>
+    </a>
+    <a href="tel:+919849306675" class="float-btn float-call">
+      <i class="fa-solid fa-phone fa-lg"></i>
+    </a>
+  </div>
+
+  
+
+  <script src="js/main.js?v=2.8"></script>
+</body>
+</html>
+
+
+
+
+
+
+
