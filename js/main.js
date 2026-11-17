@@ -50,6 +50,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Auto-center lone last project card on homepage Featured Developments
+  function alignFeaturedLastCard() {
+    const featuredGrid = document.querySelector('#featured-projects .projects-grid');
+    if (!featuredGrid) return;
+
+    const cards = Array.from(featuredGrid.querySelectorAll('.project-card'));
+    cards.forEach(card => {
+      card.style.gridColumn = '';
+      card.style.justifySelf = '';
+      card.style.maxWidth = '';
+      card.style.width = '';
+    });
+
+    const visibleCards = cards.filter(card => {
+      return card.style.display !== 'none' && window.getComputedStyle(card).display !== 'none';
+    });
+
+    if (visibleCards.length === 0) return;
+
+    const lastCard = visibleCards[visibleCards.length - 1];
+    const width = window.innerWidth;
+
+    if (width >= 1024) {
+      // 3 columns: if last row has exactly 1 card, center in column 2
+      if (visibleCards.length % 3 === 1) {
+        lastCard.style.gridColumn = '2';
+      } else {
+        lastCard.style.gridColumn = 'auto';
+      }
+    } else if (width >= 768) {
+      // 2 columns: if last row has exactly 1 card, span and center
+      if (visibleCards.length % 2 === 1) {
+        lastCard.style.gridColumn = '1 / -1';
+        lastCard.style.justifySelf = 'center';
+        lastCard.style.width = '100%';
+        lastCard.style.maxWidth = 'calc(50% - 1rem)';
+      } else {
+        lastCard.style.gridColumn = 'auto';
+      }
+    }
+  }
+
   // Project Filtering (for projects.html and homepage tabs)
   const filterTabsGroups = document.querySelectorAll('.filter-tabs');
 
@@ -90,9 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.display = 'none';
           }
         });
+
+        // Re-align featured developments grid after filtering
+        alignFeaturedLastCard();
       });
     });
   });
+
+  alignFeaturedLastCard();
+  window.addEventListener('resize', alignFeaturedLastCard, { passive: true });
 
   // Interactive EMI Calculator
   const loanSlider = document.getElementById('loanAmount');
