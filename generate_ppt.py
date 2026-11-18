@@ -1,4 +1,5 @@
 import os
+from PIL import Image
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
@@ -7,25 +8,25 @@ from pptx.enum.shapes import MSO_SHAPE
 
 def create_presentation():
     prs = Presentation()
-    # Set 16:9 widescreen dimensions (13.333 x 7.5 inches)
+    # 16:9 widescreen presentation (13.333 x 7.5 inches)
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
     blank_layout = prs.slide_layouts[6]
 
-    # Brand Colors matching the logo
-    PRIMARY_BLUE = RGBColor(11, 75, 183)     # #0B4BB7
-    DARK_NAVY    = RGBColor(10, 25, 47)      # #0A192F
-    SECONDARY_NAVY = RGBColor(15, 33, 64)   # #0F2140
-    ACCENT_GOLD  = RGBColor(245, 166, 35)    # #F5A623
-    GOLD_LIGHT   = RGBColor(254, 243, 199)   # #FEF3C7
-    BG_LIGHT     = RGBColor(248, 250, 252)   # #F8FAFC
-    CARD_BG      = RGBColor(255, 255, 255)   # #FFFFFF
-    TEXT_DARK    = RGBColor(15, 23, 42)      # #0F172A
-    TEXT_MUTED   = RGBColor(100, 116, 139)   # #64748B
-    TEXT_WHITE   = RGBColor(255, 255, 255)
-    BORDER_COLOR = RGBColor(226, 232, 240)   # #E2E8F0
-    BLUE_LIGHT   = RGBColor(238, 242, 255)   # #EEF2FF
-    GREEN_SUCCESS= RGBColor(16, 185, 129)    # #10B981
+    # Brand Colors directly from logo
+    PRIMARY_BLUE   = RGBColor(11, 75, 183)     # #0B4BB7 Royal Blue
+    DARK_NAVY      = RGBColor(10, 25, 47)      # #0A192F Dark Slate Navy
+    SECONDARY_NAVY = RGBColor(17, 34, 64)      # #112240
+    ACCENT_GOLD    = RGBColor(245, 166, 35)    # #F5A623 Architectural Amber Gold
+    GOLD_LIGHT     = RGBColor(254, 243, 199)   # #FEF3C7
+    BG_LIGHT       = RGBColor(248, 250, 252)   # #F8FAFC
+    CARD_BG        = RGBColor(255, 255, 255)   # #FFFFFF
+    TEXT_DARK      = RGBColor(15, 23, 42)      # #0F172A
+    TEXT_MUTED     = RGBColor(100, 116, 139)   # #64748B
+    TEXT_WHITE     = RGBColor(255, 255, 255)
+    BORDER_COLOR   = RGBColor(226, 232, 240)   # #E2E8F0
+    BLUE_LIGHT     = RGBColor(238, 244, 255)   # #EEF4FF
+    GREEN_SUCCESS  = RGBColor(16, 185, 129)    # #10B981
 
     LOGO_PATH = os.path.abspath("images/tirumala-nirmaan-logo.png")
 
@@ -38,47 +39,96 @@ def create_presentation():
         else:
             shape.line.fill.background()
 
+    def add_fitted_picture(slide, img_path, box_left, box_top, box_w, box_h, bg_color=None, border_color=None):
+        """
+        Guarantees that an image or logo is NEVER stretched and NEVER cropped.
+        Calculates exact aspect ratio from PIL image and centers it perfectly inside the bounding box.
+        """
+        if not os.path.exists(img_path):
+            return None
+
+        # Draw neat background card if specified
+        if bg_color or border_color:
+            bg_rect = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, box_left, box_top, box_w, box_h)
+            set_shape_flat(bg_rect, bg_color or CARD_BG, border_color, 1)
+
+        with Image.open(img_path) as im:
+            orig_w, orig_h = im.size
+
+        aspect_img = orig_w / orig_h
+        aspect_box = float(box_w) / float(box_h)
+
+        if aspect_img > aspect_box:
+            # Constrained by width
+            fit_w = box_w
+            fit_h = Inches(float(box_w.inches) / aspect_img)
+            fit_left = box_left
+            fit_top = box_top + Inches((float(box_h.inches) - float(fit_h.inches)) / 2)
+        else:
+            # Constrained by height
+            fit_h = box_h
+            fit_w = Inches(float(box_h.inches) * aspect_img)
+            fit_left = box_left + Inches((float(box_w.inches) - float(fit_w.inches)) / 2)
+            fit_top = box_top
+
+        return slide.shapes.add_picture(img_path, fit_left, fit_top, width=fit_w, height=fit_h)
+
     def add_header(slide, title, category, slide_num, total_slides=15):
         # Header background banner
-        header_bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.15))
+        header_bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.18))
         set_shape_flat(header_bar, CARD_BG, BORDER_COLOR, 1)
 
         # Gold accent stripe
-        gold_stripe = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(1.12), Inches(13.333), Inches(0.05))
+        gold_stripe = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(1.15), Inches(13.333), Inches(0.04))
         set_shape_flat(gold_stripe, ACCENT_GOLD)
 
-        # Logo on header
+        # Logo placed in an EXACT 1:1 SQUARE box (No stretching)
         if os.path.exists(LOGO_PATH):
-            slide.shapes.add_picture(LOGO_PATH, Inches(0.5), Inches(0.12), Inches(2.2), Inches(0.9))
+            add_fitted_picture(slide, LOGO_PATH, Inches(0.6), Inches(0.12), Inches(0.95), Inches(0.95))
 
-        # Title text box
-        tb = slide.shapes.add_textbox(Inches(3.0), Inches(0.18), Inches(7.5), Inches(0.8))
+        # Brand text next to square logo
+        brand_box = slide.shapes.add_textbox(Inches(1.68), Inches(0.2), Inches(2.2), Inches(0.8))
+        btf = brand_box.text_frame
+        btf.margin_top = btf.margin_left = btf.margin_bottom = btf.margin_right = 0
+        bp1 = btf.paragraphs[0]
+        bp1.text = "TIRUMALA NIRMAAN"
+        bp1.font.name = "Segoe UI"
+        bp1.font.size = Pt(11)
+        bp1.font.bold = True
+        bp1.font.color.rgb = PRIMARY_BLUE
+        bp2 = btf.add_paragraph()
+        bp2.text = "STRONG FOUNDATIONS. LASTING HOMES."
+        bp2.font.name = "Segoe UI"
+        bp2.font.size = Pt(7.5)
+        bp2.font.color.rgb = ACCENT_GOLD
+
+        # Slide Title text box
+        tb = slide.shapes.add_textbox(Inches(4.1), Inches(0.18), Inches(6.5), Inches(0.8))
         tf = tb.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
         p = tf.paragraphs[0]
         p.text = title
         p.font.name = "Segoe UI"
-        p.font.size = Pt(22)
+        p.font.size = Pt(20)
         p.font.bold = True
         p.font.color.rgb = PRIMARY_BLUE
 
         # Category pill
         if category:
-            cat_shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(10.7), Inches(0.35), Inches(2.1), Inches(0.42))
+            cat_shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(10.8), Inches(0.35), Inches(2.0), Inches(0.42))
             set_shape_flat(cat_shape, BLUE_LIGHT, PRIMARY_BLUE, 1)
             cat_tf = cat_shape.text_frame
-            cat_tf.word_wrap = False
             cat_p = cat_tf.paragraphs[0]
             cat_p.text = category.upper()
             cat_p.alignment = PP_ALIGN.CENTER
             cat_p.font.name = "Segoe UI"
-            cat_p.font.size = Pt(9.5)
+            cat_p.font.size = Pt(9)
             cat_p.font.bold = True
             cat_p.font.color.rgb = PRIMARY_BLUE
 
         # Footer bar
-        footer = slide.shapes.add_textbox(Inches(0.6), Inches(7.1), Inches(12.133), Inches(0.35))
+        footer = slide.shapes.add_textbox(Inches(0.6), Inches(7.12), Inches(12.133), Inches(0.32))
         ftf = footer.text_frame
         ftf.margin_top = ftf.margin_left = 0
         fp = ftf.paragraphs[0]
@@ -88,17 +138,18 @@ def create_presentation():
         fp.font.color.rgb = TEXT_MUTED
 
     # ==========================================
-    # SLIDE 1: COVER SLIDE (Modern Dark Widescreen)
+    # SLIDE 1: COVER SLIDE (Dark Luxury Widescreen)
     # ==========================================
     slide1 = prs.slides.add_slide(blank_layout)
     bg1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     set_shape_flat(bg1, DARK_NAVY)
 
-    # Decorative geometric accent polygons / bars
+    # Gold accent stripe at bottom
     bar1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(7.32), Inches(13.333), Inches(0.18))
     set_shape_flat(bar1, ACCENT_GOLD)
 
-    bar2 = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.9), Inches(2.6), Inches(0.42))
+    # Pill badge
+    bar2 = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.85), Inches(2.8), Inches(0.4))
     set_shape_flat(bar2, SECONDARY_NAVY, ACCENT_GOLD, 1)
     b2_tf = bar2.text_frame
     b2_p = b2_tf.paragraphs[0]
@@ -109,73 +160,85 @@ def create_presentation():
     b2_p.font.bold = True
     b2_p.font.color.rgb = ACCENT_GOLD
 
-    # Logo Card on Cover
-    logo_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(4.5), Inches(1.6))
+    # LOGO: Placed in a pure 1:1 SQUARE frame with white card backing (NO STRETCH)
+    logo_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.45), Inches(2.2), Inches(2.2))
     set_shape_flat(logo_card, CARD_BG, None)
     if os.path.exists(LOGO_PATH):
-        slide1.shapes.add_picture(LOGO_PATH, Inches(1.0), Inches(1.6), Inches(4.1), Inches(1.4))
+        add_fitted_picture(slide1, LOGO_PATH, Inches(0.9), Inches(1.55), Inches(2.0), Inches(2.0))
 
-    # Main Headline
-    title_box = slide1.shapes.add_textbox(Inches(0.8), Inches(3.3), Inches(6.5), Inches(2.2))
-    tf1 = title_box.text_frame
-    tf1.word_wrap = True
-    tf1.margin_left = tf1.margin_top = 0
-    p1 = tf1.paragraphs[0]
-    p1.text = "Comprehensive Projects\nPortfolio Presentation"
-    p1.font.name = "Segoe UI"
-    p1.font.size = Pt(36)
-    p1.font.bold = True
-    p1.font.color.rgb = TEXT_WHITE
+    # Headline text next to the square logo
+    head_box = slide1.shapes.add_textbox(Inches(3.3), Inches(1.45), Inches(4.3), Inches(2.2))
+    htf = head_box.text_frame
+    htf.word_wrap = True
+    htf.margin_top = htf.margin_left = 0
+    hp1 = htf.paragraphs[0]
+    hp1.text = "TIRUMALA NIRMAAN"
+    hp1.font.name = "Segoe UI"
+    hp1.font.size = Pt(28)
+    hp1.font.bold = True
+    hp1.font.color.rgb = TEXT_WHITE
+    
+    hp2 = htf.add_paragraph()
+    hp2.text = "STRONG FOUNDATIONS . LASTING HOMES"
+    hp2.font.name = "Segoe UI"
+    hp2.font.size = Pt(13)
+    hp2.font.bold = True
+    hp2.font.color.rgb = ACCENT_GOLD
+    hp2.space_before = Pt(4)
 
-    p2 = tf1.add_paragraph()
-    p2.text = "Strong Foundations. Lasting Homes."
-    p2.font.name = "Segoe UI"
-    p2.font.size = Pt(17)
-    p2.font.bold = True
-    p2.font.color.rgb = ACCENT_GOLD
+    hp3 = htf.add_paragraph()
+    hp3.text = "A visionary real estate portfolio delivering premier living communities across Hyderabad's Eastern Growth Corridors."
+    hp3.font.name = "Segoe UI"
+    hp3.font.size = Pt(11)
+    hp3.font.color.rgb = RGBColor(203, 213, 225)
+    hp3.space_before = Pt(8)
 
-    p3 = tf1.add_paragraph()
-    p3.text = "Showcasing Ongoing Landmarks, Upcoming Luxury Enclaves & Delivered Communities across East Hyderabad & Secunderabad Growth Corridors."
-    p3.font.name = "Segoe UI"
-    p3.font.size = Pt(11)
-    p3.font.color.rgb = RGBColor(203, 213, 225)
+    # AI Generated Cover Hero visual on right (FITTED PROPORTIONALLY - NO CROP, NO STRETCH)
+    cover_img = os.path.abspath("images/projects/ai-grandeur-towers.jpg")
+    if not os.path.exists(cover_img):
+        cover_img = os.path.abspath("images/projects/ai-sv-heights.jpg")
+    
+    hero_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.8), Inches(0.85), Inches(4.8), Inches(5.8))
+    set_shape_flat(hero_card, SECONDARY_NAVY, BORDER_COLOR, 1)
+    add_fitted_picture(slide1, cover_img, Inches(7.9), Inches(0.95), Inches(4.6), Inches(5.6))
 
-    # Hero visual on right
-    hero_img = os.path.abspath("images/hero-building.png")
-    if not os.path.exists(hero_img):
-        hero_img = os.path.abspath("images/projects/sv-heights.jpg")
-    if os.path.exists(hero_img):
-        slide1.shapes.add_picture(hero_img, Inches(7.5), Inches(0.9), Inches(5.1), Inches(5.8))
-
-    # Cover Quick Stats Bar
-    stat_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(5.8), Inches(6.4), Inches(1.1))
+    # Cover Quick Stats Box
+    stat_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(4.0), Inches(6.7), Inches(2.65))
     set_shape_flat(stat_box, SECONDARY_NAVY, PRIMARY_BLUE, 1)
     stf = stat_box.text_frame
     stf.word_wrap = True
-    sp1 = stf.paragraphs[0]
-    sp1.text = "20+ Years Legacy  |  25+ Delivered Projects  |  1.5M+ Sq.Ft Built  |  100% Vastu"
-    sp1.alignment = PP_ALIGN.CENTER
+    stf.margin_top = Inches(0.25)
+    stf.margin_left = stf.margin_right = Inches(0.3)
+    
+    sp0 = stf.paragraphs[0]
+    sp0.text = "PROVEN TRACK RECORD IN HYDERABAD"
+    sp0.font.name = "Segoe UI"
+    sp0.font.size = Pt(11)
+    sp0.font.bold = True
+    sp0.font.color.rgb = ACCENT_GOLD
+
+    sp1 = stf.add_paragraph()
+    sp1.text = "★ 20+ Years Excellence in Residential & Commercial Real Estate\n★ 25+ Completed & Successfully Handed Over Landmarks\n★ 1.5 Million+ Sq. Ft. Built Area with 100% Vaastu Compliance\n★ 1,500+ Happy Families Living in Thriving Communities"
     sp1.font.name = "Segoe UI"
-    sp1.font.size = Pt(12)
-    sp1.font.bold = True
+    sp1.font.size = Pt(11.5)
     sp1.font.color.rgb = TEXT_WHITE
+    sp1.space_before = Pt(6)
 
     sp2 = stf.add_paragraph()
-    sp2.text = "GHMC / HMDA Approved  •  RERA Certified  •  SBI / HDFC / ICICI Approved Banks"
-    sp2.alignment = PP_ALIGN.CENTER
+    sp2.text = "Approved by GHMC & HMDA  •  RERA Certified  •  Pre-Approved Loans by SBI, HDFC, ICICI, LIC"
     sp2.font.name = "Segoe UI"
-    sp2.font.size = Pt(10)
-    sp2.font.color.rgb = ACCENT_GOLD
+    sp2.font.size = Pt(9.5)
+    sp2.font.color.rgb = RGBColor(148, 163, 184)
+    sp2.space_before = Pt(8)
 
     # ==========================================
-    # SLIDE 2: EXECUTIVE COMPANY OVERVIEW
+    # SLIDE 2: COMPANY OVERVIEW
     # ==========================================
     slide2 = prs.slides.add_slide(blank_layout)
     bg2 = slide2.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     set_shape_flat(bg2, BG_LIGHT)
-    add_header(slide2, "Company Overview & Strategic Vision", "About Tirumala Nirmaan", 2)
+    add_header(slide2, "Company Overview & Strategic Vision", "About Us", 2)
 
-    # Left Column: Story Card
     c1 = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.4), Inches(5.6), Inches(5.4))
     set_shape_flat(c1, CARD_BG, BORDER_COLOR, 1)
     c1_tf = c1.text_frame
@@ -203,15 +266,12 @@ def create_presentation():
         sp.font.size = Pt(11)
         sp.font.color.rgb = TEXT_DARK
         sp.space_before = Pt(8)
-        
-        # Add description inline
         run = sp.add_run()
         run.text = desc
         run.font.bold = False
         run.font.size = Pt(10.5)
         run.font.color.rgb = TEXT_MUTED
 
-    # Right Column: 4 Stat Cards
     metrics = [
         ("20+", "Years of Excellence", "Continuously shaping Eastern Hyderabad's skyline since inception.", ACCENT_GOLD),
         ("25+", "Completed Landmarks", "Successfully delivered residential towers and commercial hubs.", PRIMARY_BLUE),
@@ -226,8 +286,6 @@ def create_presentation():
         card_y = Inches(1.4 + r * 2.65)
         sc = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, card_y, Inches(2.8), Inches(2.45))
         set_shape_flat(sc, CARD_BG, BORDER_COLOR, 1)
-        
-        # Accent top bar
         accent = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, card_y, Inches(2.8), Inches(0.12))
         set_shape_flat(accent, col)
 
@@ -295,7 +353,6 @@ def create_presentation():
         px = Inches(0.8 + i * 2.95)
         pcard = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, px, Inches(1.4), Inches(2.8), Inches(5.4))
         set_shape_flat(pcard, CARD_BG, BORDER_COLOR, 1)
-
         pbar = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, px, Inches(1.4), Inches(2.8), Inches(0.12))
         set_shape_flat(pbar, col)
 
@@ -348,7 +405,7 @@ def create_presentation():
         nt.font.color.rgb = TEXT_MUTED
 
     # ========================================================
-    # HELPER FOR SINGLE PROJECT SPOTLIGHT SLIDE
+    # HELPER FOR SINGLE PROJECT SPOTLIGHT SLIDE (PROPORTIONAL FITTED IMAGES)
     # ========================================================
     def add_project_spotlight_slide(prs, p_num, title, tagline, category, location, rera_status, 
                                    img_path, specs, highlights, amenities, total_slides=15):
@@ -361,8 +418,9 @@ def create_presentation():
         img_card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.4), Inches(5.6), Inches(5.4))
         set_shape_flat(img_card, CARD_BG, BORDER_COLOR, 1)
 
+        # Fit image PROPORTIONALLY (no stretch, no crop!)
         if img_path and os.path.exists(img_path):
-            s.shapes.add_picture(img_path, Inches(0.95), Inches(1.55), Inches(5.3), Inches(3.2))
+            add_fitted_picture(s, img_path, Inches(0.95), Inches(1.55), Inches(5.3), Inches(3.2), bg_color=DARK_NAVY)
 
         # Bottom specs ribbon inside Left Column
         spec_box = s.shapes.add_textbox(Inches(0.95), Inches(4.85), Inches(5.3), Inches(1.8))
@@ -380,7 +438,7 @@ def create_presentation():
         rera_p = stf.add_paragraph()
         rera_p.text = f"🏛️ Approval: {rera_status}"
         rera_p.font.name = "Segoe UI"
-        rera_p.font.size = Pt(10.5)
+        rera_p.font.size = Pt(10)
         rera_p.font.bold = True
         rera_p.font.color.rgb = GREEN_SUCCESS
         rera_p.space_before = Pt(4)
@@ -388,7 +446,7 @@ def create_presentation():
         spec_p = stf.add_paragraph()
         spec_p.text = f"📐 Configurations: {specs}"
         spec_p.font.name = "Segoe UI"
-        spec_p.font.size = Pt(10.5)
+        spec_p.font.size = Pt(10)
         spec_p.font.color.rgb = TEXT_DARK
         spec_p.space_before = Pt(4)
 
@@ -396,7 +454,6 @@ def create_presentation():
         right_card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(1.4), Inches(5.9), Inches(5.4))
         set_shape_flat(right_card, CARD_BG, BORDER_COLOR, 1)
         
-        # Gold accent top
         r_bar = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(1.4), Inches(5.9), Inches(0.12))
         set_shape_flat(r_bar, ACCENT_GOLD)
 
@@ -445,7 +502,7 @@ def create_presentation():
             ap.space_before = Pt(3)
 
     # ==========================================
-    # SLIDE 4: SV HEIGHTS (Ongoing)
+    # SLIDE 4: SV HEIGHTS (AI Image)
     # ==========================================
     add_project_spotlight_slide(
         prs, p_num=4,
@@ -454,7 +511,7 @@ def create_presentation():
         category="Ongoing Residential",
         location="Nagole, Hyderabad (2 Mins from Inner Ring Road)",
         rera_status="GHMC Sanctioned | RERA Approved | SBI / HDFC Bank Approved",
-        img_path=os.path.abspath("images/projects/sv-heights.jpg"),
+        img_path=os.path.abspath("images/projects/ai-sv-heights.jpg"),
         specs="Spacious 2 & 3 BHK Luxury Apartments (1180 – 1650 Sq.Ft)",
         highlights=[
             "Strategic landmark location just minutes from Nagole Metro Station and Uppal Hub.",
@@ -472,7 +529,7 @@ def create_presentation():
     )
 
     # ==========================================
-    # SLIDE 5: SSV PADMA HEIGHTS (Ongoing)
+    # SLIDE 5: SSV PADMA HEIGHTS (AI Image)
     # ==========================================
     add_project_spotlight_slide(
         prs, p_num=5,
@@ -481,7 +538,7 @@ def create_presentation():
         category="Ongoing Residential",
         location="Peerzadiguda, Near Uppal Depot, Hyderabad",
         rera_status="HMDA Approved | RERA Registered | Clear Title 100%",
-        img_path=os.path.abspath("images/projects/ssv-padma-heights.jpg"),
+        img_path=os.path.abspath("images/projects/ai-ssv-padma-heights.jpg"),
         specs="Premium 2 & 3 BHK East and West Facing Vaastu Residences",
         highlights=[
             "Nestled in an ultra-peaceful residential zone with zero noise pollution yet immediate arterial access.",
@@ -499,7 +556,7 @@ def create_presentation():
     )
 
     # ==========================================
-    # SLIDE 6: SSV KRISHNA HEIGHTS (Ongoing)
+    # SLIDE 6: SSV KRISHNA HEIGHTS (AI Image)
     # ==========================================
     add_project_spotlight_slide(
         prs, p_num=6,
@@ -508,7 +565,7 @@ def create_presentation():
         category="Ongoing Residential",
         location="Parvathapur, Peerzadiguda Belt, Hyderabad",
         rera_status="Fully Sanctioned | RERA Compliant | Bank Loan Ready",
-        img_path=os.path.abspath("images/projects/thirumala-modern.jpg"),
+        img_path=os.path.abspath("images/projects/ai-ssv-krishna-heights.jpg"),
         specs="Thoughtfully Crafted 2 & 3 BHK Homes with Zero Space Wastage",
         highlights=[
             "Located in the booming Parvathapur-Boduppal-Uppal triangle with rapid municipal expansion.",
@@ -526,7 +583,7 @@ def create_presentation():
     )
 
     # ==========================================
-    # SLIDE 7: THIRUMALA ELITE MEADOWS (Upcoming)
+    # SLIDE 7: THIRUMALA ELITE MEADOWS (AI Image)
     # ==========================================
     add_project_spotlight_slide(
         prs, p_num=7,
@@ -535,7 +592,7 @@ def create_presentation():
         category="Upcoming Signature Enclave",
         location="Pocharam / Ghatkesar Growth Corridor (Near IT Raheja SEZ)",
         rera_status="Pre-Launch Phase | HMDA Layout Plan in Progress | Exclusive Booking",
-        img_path=os.path.abspath("images/services/villas.jpg"),
+        img_path=os.path.abspath("images/projects/ai-elite-meadows-villas.jpg"),
         specs="Grand 3 & 4 BHK Luxury Duplex Villas (2400 – 3500 Sq.Ft)",
         highlights=[
             "Strategically positioned near Raheja Mindspace IT Park, Infosys Pocharam, and ORR Exit 9.",
@@ -553,7 +610,7 @@ def create_presentation():
     )
 
     # ==========================================
-    # SLIDE 8: SSV GRANDEUR TOWERS (Upcoming)
+    # SLIDE 8: SSV GRANDEUR TOWERS (AI Image)
     # ==========================================
     add_project_spotlight_slide(
         prs, p_num=8,
@@ -562,7 +619,7 @@ def create_presentation():
         category="Upcoming High-Rise",
         location="Boduppal – Peerzadiguda Link Road, Hyderabad",
         rera_status="Pre-Launch Planning | High-Rise Category | Express Interest Open",
-        img_path=os.path.abspath("images/projects/sv-heights-aerial.jpg"),
+        img_path=os.path.abspath("images/projects/ai-grandeur-towers.jpg"),
         specs="Grand 2.5 & 3 BHK High-Rise Residences with Panoramic Horizon Views",
         highlights=[
             "Iconic architectural elevation setting a brand-new skyline benchmark in East Hyderabad.",
@@ -580,7 +637,7 @@ def create_presentation():
     )
 
     # ==========================================
-    # SLIDE 9: COMMERCIAL LANDMARKS (SV's Manik Arcade & D-Mart Complex)
+    # SLIDE 9: COMMERCIAL LANDMARKS (AI Image Fitted)
     # ==========================================
     slide9 = prs.slides.add_slide(blank_layout)
     bg9 = slide9.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
@@ -588,7 +645,7 @@ def create_presentation():
     add_header(slide9, "Landmark Commercial Properties", "Commercial Real Estate", 9)
 
     comms = [
-        ("D-Mart Commercial Complex", "Ramanthapur Main Road, Hyderabad", "images/projects/sudhakar-building.jpg",
+        ("D-Mart Commercial Complex", "Ramanthapur Main Road, Hyderabad", "images/projects/ai-commercial-arcade.jpg",
          "Prime Arterial Commercial Anchor", "High-Footfall Retail Hub", [
              "Prime street-facing retail frontage with tremendous vehicular visibility.",
              "Anchored by D-Mart supermarket drawing thousands of daily shoppers.",
@@ -612,9 +669,9 @@ def create_presentation():
         cbar = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, cx, Inches(1.4), Inches(5.7), Inches(0.12))
         set_shape_flat(cbar, PRIMARY_BLUE)
 
-        # Image
+        # Image fitted proportionally (NO STRETCH, NO CROP)
         if os.path.exists(cimg):
-            slide9.shapes.add_picture(cimg, Inches(0.95 + idx * 5.9), Inches(1.6), Inches(5.4), Inches(2.3))
+            add_fitted_picture(slide9, cimg, Inches(0.95 + idx * 5.9), Inches(1.6), Inches(5.4), Inches(2.3), bg_color=DARK_NAVY)
 
         ctf = ccard.text_frame
         ctf.word_wrap = True
@@ -680,11 +737,10 @@ def create_presentation():
         tcard = slide10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, tcx, tcy, Inches(5.7), Inches(2.5))
         set_shape_flat(tcard, CARD_BG, BORDER_COLOR, 1)
 
-        # Image thumbnail
+        # Image thumbnail fitted proportionally (NO STRETCH, NO CROP)
         if os.path.exists(timg):
-            slide10.shapes.add_picture(timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2))
+            add_fitted_picture(slide10, timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2), bg_color=DARK_NAVY)
 
-        # Text on right of card
         ttb = slide10.shapes.add_textbox(tcx + Inches(2.45), tcy + Inches(0.15), Inches(3.1), Inches(2.2))
         ttf = ttb.text_frame
         ttf.word_wrap = True
@@ -749,7 +805,7 @@ def create_presentation():
         set_shape_flat(tcard, CARD_BG, BORDER_COLOR, 1)
 
         if os.path.exists(timg):
-            slide11.shapes.add_picture(timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2))
+            add_fitted_picture(slide11, timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2), bg_color=DARK_NAVY)
 
         ttb = slide11.shapes.add_textbox(tcx + Inches(2.45), tcy + Inches(0.15), Inches(3.1), Inches(2.2))
         ttf = ttb.text_frame
@@ -815,7 +871,7 @@ def create_presentation():
         set_shape_flat(tcard, CARD_BG, BORDER_COLOR, 1)
 
         if os.path.exists(timg):
-            slide12.shapes.add_picture(timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2))
+            add_fitted_picture(slide12, timg, tcx + Inches(0.15), tcy + Inches(0.15), Inches(2.2), Inches(2.2), bg_color=DARK_NAVY)
 
         ttb = slide12.shapes.add_textbox(tcx + Inches(2.45), tcy + Inches(0.15), Inches(3.1), Inches(2.2))
         ttf = ttb.text_frame
@@ -908,7 +964,6 @@ def create_presentation():
     set_shape_flat(bg14, BG_LIGHT)
     add_header(slide14, "Strategic Geographical Footprint in Hyderabad", "Location Advantage", 14)
 
-    # Left: Strategic zones
     lcard = slide14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.4), Inches(6.0), Inches(5.4))
     set_shape_flat(lcard, CARD_BG, BORDER_COLOR, 1)
     ltf = lcard.text_frame
@@ -945,7 +1000,6 @@ def create_presentation():
         zd.font.size = Pt(9.5)
         zd.font.color.rgb = TEXT_MUTED
 
-    # Right: Connectivity Points Card
     rcard = slide14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.1), Inches(1.4), Inches(5.4), Inches(5.4))
     set_shape_flat(rcard, CARD_BG, BORDER_COLOR, 1)
     
@@ -983,24 +1037,22 @@ def create_presentation():
         tp.space_before = Pt(8)
 
     # ==========================================
-    # SLIDE 15: CLOSING & SITE VISIT CALL-TO-ACTION (Dark Theme)
+    # SLIDE 15: CLOSING & VIP SITE VISIT (Dark Theme)
     # ==========================================
     slide15 = prs.slides.add_slide(blank_layout)
     bg15 = slide15.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     set_shape_flat(bg15, DARK_NAVY)
 
-    # Gold stripe bottom
     b15 = slide15.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(7.32), Inches(13.333), Inches(0.18))
     set_shape_flat(b15, ACCENT_GOLD)
 
-    # Centered Logo
+    # Centered Logo in a clean 1:1 SQUARE frame (NO STRETCH)
     if os.path.exists(LOGO_PATH):
-        lcard15 = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(4.6), Inches(0.8), Inches(4.1), Inches(1.5))
+        lcard15 = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(5.666), Inches(0.7), Inches(2.0), Inches(2.0))
         set_shape_flat(lcard15, CARD_BG, None)
-        slide15.shapes.add_picture(LOGO_PATH, Inches(4.75), Inches(0.9), Inches(3.8), Inches(1.3))
+        add_fitted_picture(slide15, LOGO_PATH, Inches(5.766), Inches(0.8), Inches(1.8), Inches(1.8))
 
-    # Headline
-    cbox = slide15.shapes.add_textbox(Inches(1.5), Inches(2.5), Inches(10.333), Inches(1.5))
+    cbox = slide15.shapes.add_textbox(Inches(1.5), Inches(2.85), Inches(10.333), Inches(1.2))
     ctf = cbox.text_frame
     ctf.word_wrap = True
     ctf.margin_top = ctf.margin_left = 0
@@ -1009,7 +1061,7 @@ def create_presentation():
     cp1.text = "Begin Your Journey to Lasting Living"
     cp1.alignment = PP_ALIGN.CENTER
     cp1.font.name = "Segoe UI"
-    cp1.font.size = Pt(32)
+    cp1.font.size = Pt(30)
     cp1.font.bold = True
     cp1.font.color.rgb = TEXT_WHITE
 
@@ -1021,7 +1073,6 @@ def create_presentation():
     cp2.font.color.rgb = RGBColor(203, 213, 225)
     cp2.space_before = Pt(4)
 
-    # Contact Cards Grid (3 Cards)
     contacts = [
         ("📞 Direct Contact Hotline", "+91 92465 24346\n+91 98480 12345", "Available Mon-Sun (9AM - 8PM)"),
         ("🌐 Official Web Portal", "tirumala-tau.vercel.app\ncontact@tirumalanirmaan.com", "24/7 Digital Inquiry Form"),
@@ -1030,10 +1081,10 @@ def create_presentation():
 
     for idx, (ctitle, cval, cextra) in enumerate(contacts):
         card_x = Inches(1.5 + idx * 3.55)
-        card_shape = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, Inches(4.2), Inches(3.2), Inches(2.2))
+        card_shape = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, Inches(4.3), Inches(3.2), Inches(2.2))
         set_shape_flat(card_shape, SECONDARY_NAVY, PRIMARY_BLUE, 1)
 
-        cbar = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, Inches(4.2), Inches(3.2), Inches(0.1))
+        cbar = slide15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, Inches(4.3), Inches(3.2), Inches(0.1))
         set_shape_flat(cbar, ACCENT_GOLD)
 
         stf = card_shape.text_frame
@@ -1066,10 +1117,10 @@ def create_presentation():
         p3.font.color.rgb = RGBColor(148, 163, 184)
         p3.space_before = Pt(6)
 
-    # Save presentation
+    # Save output
     output_path = os.path.abspath("Tirumala_Nirmaan_Projects_Presentation.pptx")
     prs.save(output_path)
-    print(f"Presentation saved successfully to: {output_path}")
+    print(f"Presentation generated successfully: {output_path}")
 
 if __name__ == "__main__":
     create_presentation()

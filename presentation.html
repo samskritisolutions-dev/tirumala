@@ -74,11 +74,13 @@
         }
 
         .pres-logo {
-            height: 40px;
-            width: auto;
-            border-radius: 6px;
+            height: 44px;
+            width: 44px;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            border-radius: 8px;
             background: #ffffff;
-            padding: 4px 8px;
+            padding: 4px;
         }
 
         .pres-title-wrap h1 {
@@ -214,8 +216,10 @@
         }
 
         .canvas-brand img {
-            height: 44px;
-            width: auto;
+            height: 48px;
+            width: 48px;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
         }
 
         .canvas-title-group h2 {
@@ -417,7 +421,8 @@
         .cover-img-frame img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #0A192F;
         }
 
         /* 2-Column Standard Project Spotlight Slide */
@@ -447,7 +452,8 @@
         .spotlight-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #0A192F;
         }
 
         .spotlight-specs-ribbon {
@@ -647,7 +653,8 @@
         .deliv-thumb img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #0A192F;
         }
 
         .deliv-info h4 {
@@ -872,8 +879,16 @@
             <div class="canvas-body" style="padding-top: 48px;">
                 <div class="cover-grid">
                     <div class="cover-left">
-                        <div class="cover-pill">
-                            <i class="fa-solid fa-award"></i> Official Company Presentation 2026
+                        <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px;">
+                            <div style="width: 76px; height: 76px; background: #ffffff; border-radius: 12px; padding: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(0,0,0,0.35); flex-shrink: 0;">
+                                <img src="images/tirumala-nirmaan-logo.png" alt="Tirumala Nirmaan Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div>
+                                <div class="cover-pill" style="margin-bottom: 4px;">
+                                    <i class="fa-solid fa-award"></i> Official Company Presentation 2026
+                                </div>
+                                <div style="color: var(--accent-gold); font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">TIRUMALA NIRMAAN</div>
+                            </div>
                         </div>
                         <h1>Tirumala <span>Nirmaan</span></h1>
                         <div class="cover-tagline">STRONG FOUNDATIONS . LASTING HOMES</div>
@@ -901,7 +916,7 @@
                     </div>
                     <div class="cover-right">
                         <div class="cover-img-frame">
-                            <img src="images/hero-building.png" alt="Tirumala Nirmaan Signature Elevation" onerror="this.src='images/projects/sv-heights.jpg'">
+                            <img src="images/projects/ai-grandeur-towers.jpg" alt="Tirumala Nirmaan Signature Elevation">
                         </div>
                     </div>
                 </div>
@@ -1063,7 +1078,7 @@
                 <div class="spotlight-grid">
                     <div class="spotlight-left">
                         <div class="spotlight-img-box">
-                            <img src="images/projects/sv-heights.jpg" alt="SV Heights Elevation">
+                            <img src="images/projects/ai-sv-heights.jpg" alt="SV Heights Elevation">
                         </div>
                         <div class="spotlight-specs-ribbon">
                             <div class="spec-row">
@@ -1126,7 +1141,7 @@
                 <div class="spotlight-grid">
                     <div class="spotlight-left">
                         <div class="spotlight-img-box">
-                            <img src="images/projects/ssv-padma-heights.jpg" alt="SSV Padma Heights Elevation">
+                            <img src="images/projects/ai-ssv-padma-heights.jpg" alt="SSV Padma Heights Elevation">
                         </div>
                         <div class="spotlight-specs-ribbon">
                             <div class="spec-row">
@@ -1189,7 +1204,7 @@
                 <div class="spotlight-grid">
                     <div class="spotlight-left">
                         <div class="spotlight-img-box">
-                            <img src="images/projects/thirumala-modern.jpg" alt="SSV Krishna Heights Elevation">
+                            <img src="images/projects/ai-ssv-krishna-heights.jpg" alt="SSV Krishna Heights Elevation">
                         </div>
                         <div class="spotlight-specs-ribbon">
                             <div class="spec-row">
@@ -1252,7 +1267,7 @@
                 <div class="spotlight-grid">
                     <div class="spotlight-left">
                         <div class="spotlight-img-box">
-                            <img src="images/services/villas.jpg" alt="Thirumala Elite Meadows Luxury Villas">
+                            <img src="images/projects/ai-elite-meadows-villas.jpg" alt="Thirumala Elite Meadows Luxury Villas">
                         </div>
                         <div class="spotlight-specs-ribbon">
                             <div class="spec-row">
@@ -1315,7 +1330,7 @@
                 <div class="spotlight-grid">
                     <div class="spotlight-left">
                         <div class="spotlight-img-box">
-                            <img src="images/projects/sv-heights-aerial.jpg" alt="SSV Grandeur Towers High-Rise">
+                            <img src="images/projects/ai-grandeur-towers.jpg" alt="SSV Grandeur Towers High-Rise">
                         </div>
                         <div class="spotlight-specs-ribbon">
                             <div class="spec-row">
@@ -1378,8 +1393,8 @@
                 <div class="spotlight-grid">
                     <!-- D-Mart Complex -->
                     <div style="background: #ffffff; border-radius: 12px; border: 1px solid var(--card-border); overflow: hidden; display: flex; flex-direction: column;">
-                        <div style="height: 180px; overflow: hidden; position: relative;">
-                            <img src="images/projects/sudhakar-building.jpg" alt="D-Mart Commercial Complex" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div style="height: 180px; overflow: hidden; position: relative; background: #0A192F;">
+                            <img src="images/projects/ai-commercial-arcade.jpg" alt="D-Mart Commercial Complex" style="width: 100%; height: 100%; object-fit: contain;">
                             <span style="position: absolute; top: 12px; left: 12px; background: var(--primary-blue); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px;">HIGH-FOOTFALL ANCHOR</span>
                         </div>
                         <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 8px;">
@@ -1396,8 +1411,8 @@
 
                     <!-- SV's Manik Arcade -->
                     <div style="background: #ffffff; border-radius: 12px; border: 1px solid var(--card-border); overflow: hidden; display: flex; flex-direction: column;">
-                        <div style="height: 180px; overflow: hidden; position: relative;">
-                            <img src="images/projects/sv-manik-arcade.jpg" alt="SV Manik Arcade" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div style="height: 180px; overflow: hidden; position: relative; background: #0A192F;">
+                            <img src="images/projects/sv-manik-arcade.jpg" alt="SV Manik Arcade" style="width: 100%; height: 100%; object-fit: contain;">
                             <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold-dark); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px;">CENTRAL BUSINESS HUB</span>
                         </div>
                         <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 8px;">
@@ -1716,8 +1731,8 @@
         <!-- ============================================== -->
         <article class="slide-canvas slide-dark" data-slide="15">
             <div class="canvas-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 36px;">
-                <div style="background: #ffffff; padding: 8px 18px; border-radius: 8px; margin-bottom: 20px; display: inline-block;">
-                    <img src="images/tirumala-nirmaan-logo.png" alt="Tirumala Nirmaan" style="height: 52px; width: auto;">
+                <div style="background: #ffffff; padding: 10px; border-radius: 12px; margin-bottom: 20px; display: inline-flex; align-items: center; justify-content: center; width: 84px; height: 84px; box-shadow: 0 6px 20px rgba(0,0,0,0.4); flex-shrink: 0;">
+                    <img src="images/tirumala-nirmaan-logo.png" alt="Tirumala Nirmaan" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <h2 style="font-family: var(--font-heading); font-size: 34px; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
                     Begin Your Journey to <span style="color: var(--accent-gold);">Lasting Living</span>
