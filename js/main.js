@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Global helper fallback: redirect to contact page form
   window.openEnquiry = function(projectName = '') {
-    const target = projectName ? `contact.html?project=${encodeURIComponent(projectName)}#site-visit-form` : 'contact.html#site-visit-form';
+    const target = projectName ? `contact?project=${encodeURIComponent(projectName)}#site-visit-form` : 'contact#site-visit-form';
     window.location.href = target;
   };
 

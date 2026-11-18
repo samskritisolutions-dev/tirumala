@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
         exit;
     } else {
-        header('Location: index.html');
+        header('Location: ./');
         exit;
     }
 }
@@ -44,7 +44,7 @@ if (!empty($_POST['hp_field'])) {
         echo json_encode(['status' => 'success', 'message' => 'Your request has been received.']);
         exit;
     } else {
-        header('Location: thank-you.html');
+        header('Location: thank-you');
         exit;
     }
 }
@@ -211,6 +211,6 @@ if ($is_ajax) {
     ]);
     exit;
 } else {
-    header('Location: thank-you.html');
+    header('Location: thank-you');
     exit;
 }
