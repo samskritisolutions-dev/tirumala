@@ -50,46 +50,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Auto-center lone last project card on homepage Featured Developments
-  function alignFeaturedLastCard() {
-    const featuredGrid = document.querySelector('#featured-projects .projects-grid');
-    if (!featuredGrid) return;
-
-    const cards = Array.from(featuredGrid.querySelectorAll('.project-card'));
-    cards.forEach(card => {
-      card.style.gridColumn = '';
-      card.style.justifySelf = '';
-      card.style.maxWidth = '';
-      card.style.width = '';
-    });
-
-    const visibleCards = cards.filter(card => {
-      return card.style.display !== 'none' && window.getComputedStyle(card).display !== 'none';
-    });
-
-    if (visibleCards.length === 0) return;
-
-    const lastCard = visibleCards[visibleCards.length - 1];
+  // Auto-center project cards (1 card, 2 cards, or lone last card in row)
+  function alignProjectGrids() {
+    const grids = document.querySelectorAll('.projects-grid');
     const width = window.innerWidth;
 
-    if (width >= 1024) {
-      // 3 columns: if last row has exactly 1 card, center in column 2
-      if (visibleCards.length % 3 === 1) {
-        lastCard.style.gridColumn = '2';
+    grids.forEach(grid => {
+      const cards = Array.from(grid.querySelectorAll('.project-card'));
+      if (!cards.length) return;
+
+      // Reset previous alignments and classes
+      grid.classList.remove('is-centered-1', 'is-centered-2');
+      grid.style.gridTemplateColumns = '';
+      grid.style.justifyContent = '';
+
+      cards.forEach(card => {
+        card.style.gridColumn = '';
+        card.style.justifySelf = '';
+        card.style.maxWidth = '';
+        card.style.width = '';
+      });
+
+      // Filter to cards currently visible
+      const visibleCards = cards.filter(card => {
+        const style = window.getComputedStyle(card);
+        return card.style.display !== 'none' && style.display !== 'none' && style.visibility !== 'hidden';
+      });
+
+      const count = visibleCards.length;
+      if (count === 0) return;
+
+      if (width >= 1024) {
+        // Desktop (>= 1024px, 3-column base)
+        if (count === 1) {
+          grid.classList.add('is-centered-1');
+          grid.style.gridTemplateColumns = 'minmax(0, 390px)';
+          grid.style.justifyContent = 'center';
+        } else if (count === 2) {
+          grid.classList.add('is-centered-2');
+          grid.style.gridTemplateColumns = 'repeat(2, minmax(0, 390px))';
+          grid.style.justifyContent = 'center';
+        } else {
+          grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+          grid.style.justifyContent = '';
+          // If the last row has exactly 1 lone card (e.g. 4, 7, 10, 13, 16 cards), center it in column 2
+          if (count % 3 === 1) {
+            visibleCards[count - 1].style.gridColumn = '2';
+          }
+        }
+      } else if (width >= 768) {
+        // Tablet (768px - 1023px, 2-column base)
+        if (count === 1) {
+          grid.classList.add('is-centered-1');
+          grid.style.gridTemplateColumns = 'minmax(0, 390px)';
+          grid.style.justifyContent = 'center';
+        } else {
+          grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+          grid.style.justifyContent = '';
+          // If odd number of cards (e.g. 3, 5, 7), center the last orphan card
+          if (count % 2 === 1) {
+            const lastCard = visibleCards[count - 1];
+            lastCard.style.gridColumn = '1 / -1';
+            lastCard.style.justifySelf = 'center';
+            lastCard.style.width = '100%';
+            lastCard.style.maxWidth = 'calc(50% - 1rem)';
+          }
+        }
       } else {
-        lastCard.style.gridColumn = 'auto';
+        // Mobile (< 768px): 1-column natural flow
+        grid.style.gridTemplateColumns = '';
+        grid.style.justifyContent = '';
       }
-    } else if (width >= 768) {
-      // 2 columns: if last row has exactly 1 card, span and center
-      if (visibleCards.length % 2 === 1) {
-        lastCard.style.gridColumn = '1 / -1';
-        lastCard.style.justifySelf = 'center';
-        lastCard.style.width = '100%';
-        lastCard.style.maxWidth = 'calc(50% - 1rem)';
-      } else {
-        lastCard.style.gridColumn = 'auto';
-      }
-    }
+    });
   }
 
   // Project Filtering (for projects.html and homepage tabs)
@@ -133,14 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        // Re-align featured developments grid after filtering
-        alignFeaturedLastCard();
+        // Re-align project grids after filtering
+        alignProjectGrids();
       });
     });
   });
 
-  alignFeaturedLastCard();
-  window.addEventListener('resize', alignFeaturedLastCard, { passive: true });
+  alignProjectGrids();
+  window.addEventListener('resize', alignProjectGrids, { passive: true });
 
   // Interactive EMI Calculator
   const loanSlider = document.getElementById('loanAmount');

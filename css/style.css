@@ -1012,6 +1012,7 @@ p,
   .hero-content {
     max-width: 440px;
   }
+
   .hero-title {
     font-size: 2.7rem;
   }
@@ -1099,7 +1100,7 @@ p,
 
 @media (max-width: 480px) {
   .hero-mobile-img {
-    height: 220px;
+    height: 100%;
   }
 
   .hero-title {
@@ -1325,20 +1326,15 @@ p,
   }
 }
 
-/* Featured Developments: Center last project card when orphaned on row */
-@media (min-width: 1024px) {
-  #featured-projects .projects-grid>.project-card:last-child {
-    grid-column: 2;
-  }
+/* Dynamic Grid Centering: When 1 or 2 cards are shown after filtering */
+.projects-grid.is-centered-2 {
+  grid-template-columns: repeat(2, minmax(0, 390px)) !important;
+  justify-content: center !important;
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  #featured-projects .projects-grid>.project-card:last-child {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: 100%;
-    max-width: calc(50% - 1rem);
-  }
+.projects-grid.is-centered-1 {
+  grid-template-columns: minmax(0, 390px) !important;
+  justify-content: center !important;
 }
 
 .project-card {
