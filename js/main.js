@@ -220,27 +220,93 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateEMI(); // initial calculation
   }
 
-  // Interactive Form Submissions (Mock with Toast Confirmation)
-  const forms = document.querySelectorAll('form[data-ajax="lead"]');
+  // Real PHP Form Submission Handler (AJAX with Graceful Fallback)
+  const forms = document.querySelectorAll('form[data-ajax="lead"], form.lead-capture-form');
   forms.forEach(form => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
+      const originalHtml = submitBtn ? submitBtn.innerHTML : 'Submit Request';
       
+      // Ensure feedback element exists
+      let feedback = form.querySelector('.form-feedback');
+      if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'form-feedback';
+        form.appendChild(feedback);
+      }
+      feedback.style.display = 'none';
+      feedback.innerHTML = '';
+
       if (submitBtn) {
-        submitBtn.innerHTML = 'Submitting...';
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
         submitBtn.disabled = true;
       }
 
-      setTimeout(() => {
-        alert('Thank you for contacting Thirumala Constructions & Developers! Our senior consultant will call you shortly at the provided number.');
-        form.reset();
+      const actionUrl = form.getAttribute('action') || 'process-form.php';
+      const formData = new FormData(form);
+      if (!formData.has('ajax')) {
+        formData.append('ajax', '1');
+      }
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => {
+        return response.json().then(data => ({
+          status: response.status,
+          ok: response.ok,
+          data: data
+        })).catch(() => ({
+          status: response.status,
+          ok: response.ok,
+          data: { message: response.ok ? 'Thank you! Your request has been received.' : 'Submission error occurred.' }
+        }));
+      })
+      .then(result => {
+        if (result.ok && result.data.status !== 'error') {
+          feedback.style.display = 'block';
+          feedback.innerHTML = `
+            <div style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 1.15rem 1.25rem; border-radius: 8px; margin-top: 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+              <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.35rem; margin-top: 2px;"></i>
+              <div>
+                <strong style="font-size: 1rem; color: #065f46;">Request Received!</strong>
+                <p style="margin: 0.35rem 0 0; font-size: 0.925rem; color: #047857; line-height: 1.5;">
+                  ${result.data.message || 'Thank you for contacting Thirumala Constructions! Our senior civil engineer will call you shortly.'}
+                </p>
+              </div>
+            </div>`;
+          form.reset();
+        } else {
+          feedback.style.display = 'block';
+          feedback.innerHTML = `
+            <div style="background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; padding: 1rem 1.25rem; border-radius: 8px; margin-top: 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+              <i class="fa-solid fa-circle-exclamation" style="color: #ef4444; font-size: 1.35rem; margin-top: 2px;"></i>
+              <div>
+                <strong style="font-size: 0.95rem; color: #991b1b;">Please check your input:</strong>
+                <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: #b91c1c;">
+                  ${result.data.message || 'Please check the required fields and try again.'}
+                </p>
+              </div>
+            </div>`;
+        }
+      })
+      .catch(err => {
+        console.warn('AJAX submission error, submitting via standard POST:', err);
+        // Fallback to normal form submission if fetch completely fails (e.g. offline)
+        form.submit();
+      })
+      .finally(() => {
         if (submitBtn) {
-          submitBtn.innerHTML = originalText;
+          submitBtn.innerHTML = originalHtml;
           submitBtn.disabled = false;
         }
-      }, 700);
+      });
     });
   });
 
