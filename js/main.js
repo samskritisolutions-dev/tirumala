@@ -56,6 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = window.innerWidth;
 
     grids.forEach(grid => {
+      // Featured Developments on homepage: always keep cards strictly left-aligned as requested!
+      if (grid.closest('#featured-projects')) {
+        grid.classList.remove('is-centered-1', 'is-centered-2');
+        grid.style.justifyContent = 'flex-start';
+        const allCards = Array.from(grid.querySelectorAll('.project-card'));
+        allCards.forEach(card => {
+          card.style.gridColumn = '';
+          card.style.justifySelf = '';
+          card.style.maxWidth = '';
+          card.style.width = '';
+        });
+        if (width >= 1024) {
+          grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        } else if (width >= 768) {
+          grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+        } else {
+          grid.style.gridTemplateColumns = '1fr';
+        }
+        return;
+      }
+
       const cards = Array.from(grid.querySelectorAll('.project-card'));
       if (!cards.length) return;
 

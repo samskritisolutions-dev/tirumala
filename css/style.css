@@ -3925,11 +3925,11 @@ body {
     padding: 3rem !important;
   }
 
-  .service-detail-row:nth-child(even) > div:first-child {
+  .service-detail-row:nth-child(even)>div:first-child {
     order: 2;
   }
 
-  .service-detail-row:nth-child(even) > div:last-child {
+  .service-detail-row:nth-child(even)>div:last-child {
     order: 1;
   }
 }
@@ -4256,13 +4256,13 @@ body {
    FEATURED DEVELOPMENTS REDESIGN (Exact Match to Design Reference)
    ======================================================== */
 #featured-projects {
-  background-color: #061325 !important;
+  background-color: #061329 !important;
   background-image: repeating-linear-gradient(
     90deg,
     transparent,
-    transparent 49px,
-    rgba(255, 255, 255, 0.035) 49px,
-    rgba(255, 255, 255, 0.035) 50px
+    transparent 38px,
+    rgba(255, 255, 255, 0.11) 38px,
+    rgba(255, 255, 255, 0.11) 39.5px
   ) !important;
   padding: 100px 0 110px !important;
   position: relative;
@@ -4355,11 +4355,20 @@ body {
   box-shadow: 0 4px 16px rgba(245, 166, 35, 0.35) !important;
 }
 
-/* Projects Grid */
+/* Projects Grid (Strict Left Alignment) */
 #featured-projects .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  justify-content: flex-start !important;
+  justify-items: stretch !important;
+  gap: 30px !important;
+}
+
+#featured-projects .projects-grid .project-card {
+  grid-column: auto !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* Card Design */
@@ -4540,21 +4549,26 @@ body {
   #featured-projects {
     padding: 70px 0 80px !important;
   }
+
   .fd-main-title {
     font-size: 34px !important;
   }
+
   .fd-header-row {
     gap: 18px;
     margin-bottom: 20px;
   }
+
   #featured-projects .projects-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+
   .fd-filter-tabs {
     margin: 24px 0 32px !important;
     gap: 8px !important;
   }
+
   .fd-filter-tabs .filter-btn {
     padding: 7px 18px !important;
     font-size: 13px !important;
