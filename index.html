@@ -142,7 +142,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap"
     rel="stylesheet">
 
   <!-- FontAwesome Icons CDN -->
@@ -318,318 +318,208 @@
     </div>
   </section>
 
-  <!-- Featured Projects Showcase with Tabs -->
+  <!-- Featured Developments Showcase (Redesigned per Reference) -->
   <section class="projects-section" id="featured-projects">
     <div class="container">
-      <div class="text-center">
-        <span class="section-tag">Property Showcase</span>
-        <h2 class="section-title font-display">Featured Developments</h2>
-        <p class="section-subtitle mx-auto">
-          Explore our premier ongoing projects, visionary upcoming ventures, and landmark commercial centers engineered
-          with rock-solid civil expertise across Hyderabad.
-        </p>
+      
+      <!-- Top 2-Column Header -->
+      <div class="fd-header-row">
+        <div class="fd-header-left">
+          <span class="fd-tag">OUR PROJECTS</span>
+          <h2 class="fd-main-title">Spaces designed for<br>generations</h2>
+        </div>
+        <div class="fd-header-right">
+          <p class="fd-subtitle">
+            Thoughtfully planned communities in Hyderabad's fastest-growing corridors, close to IT hubs, schools and the Outer Ring Road.
+          </p>
+        </div>
       </div>
 
-      <!-- UX Filter Tabs (All, Ongoing, Upcoming, Commercial) -->
-      <div class="filter-tabs">
+      <!-- UX Filter Pills (All, Ongoing, Upcoming, Commercial) -->
+      <div class="filter-tabs fd-filter-tabs">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="ongoing">Ongoing</button>
         <button class="filter-btn" data-filter="upcoming">Upcoming</button>
         <button class="filter-btn" data-filter="commercial">Commercial</button>
       </div>
 
+      <!-- Projects Grid (3 Columns) -->
       <div class="projects-grid">
-        <!-- 1. Ongoing: SV Heights, Nagole -->
-        <article class="project-card" data-category="ongoing apartments" data-status="ongoing">
-          <div class="project-thumb">
-            <span class="project-status status-ongoing">Ongoing / Booking Open</span>
-            <span class="project-category">Luxury Apartments</span>
-            <img src="images/projects/sv-heights.jpg" alt="SV Heights Nagole">
+        
+        <!-- 1. TN Heights (Ongoing) -->
+        <a href="projects#sv-heights" class="project-card fd-card" data-category="ongoing apartments" data-status="ongoing">
+          <div class="fd-thumb">
+            <span class="fd-badge">Ongoing</span>
+            <img src="images/projects/ai-sv-heights.jpg" alt="TN Heights Kokapet Hyderabad">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Nagole Corridor, Hyderabad
-            </div>
-            <h3 class="project-name">SV Heights</h3>
-            <p class="project-desc">
-              A premium residential apartment enclave featuring contemporary facade architecture, well-ventilated 2 & 3
-              BHK flats, landscaped greenery, and immediate proximity to the Nagole Metro Station.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Config</div>
-                <div class="spec-val">2 & 3 BHK</div>
+          <div class="fd-body">
+            <h3 class="fd-title">TN Heights</h3>
+            <div class="fd-location">Kokapet, Hyderabad</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">2 & 3 BHK</div>
+                <div class="fd-spec-sub">1,250 – 2,100 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Sizes</div>
-                <div class="spec-val">1150 - 1650 sft</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Vastu</div>
-                <div class="spec-val">100% Compliant</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">₹1.1 Cr*</div>
+                <div class="fd-price-sub">Onwards</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects#sv-heights" class="btn btn-primary btn-sm">
-                View Details <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA No: P024000XXXXX</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 2. Ongoing: SSV Padma Heights, Peerzadiguda -->
-        <article class="project-card" data-category="ongoing apartments" data-status="ongoing">
-          <div class="project-thumb">
-            <span class="project-status status-ongoing">Under Fast-Paced Construction</span>
-            <span class="project-category">Gated Community</span>
-            <img src="images/projects/ssv-padma-heights.jpg" alt="SSV Padma Heights Peerzadiguda">
+        <!-- 2. TN Villas (Upcoming) -->
+        <a href="projects#elite-meadows" class="project-card fd-card" data-category="upcoming villas" data-status="upcoming">
+          <div class="fd-thumb">
+            <span class="fd-badge">Upcoming</span>
+            <img src="images/projects/ai-elite-meadows-villas.jpg" alt="TN Villas Tellapur Hyderabad">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Peerzadiguda, Near Uppal Depot
-            </div>
-            <h3 class="project-name">SSV Padma Heights</h3>
-            <p class="project-desc">
-              Stately residential community designed for high standard of family life. Features dedicated car parking,
-              automatic elevators, solar water heating, and high-speed internet provisioning.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Type</div>
-                <div class="spec-val">Gated Apt</div>
+          <div class="fd-body">
+            <h3 class="fd-title">TN Villas</h3>
+            <div class="fd-location">Tellapur, Hyderabad</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">4 BHK Villas</div>
+                <div class="fd-spec-sub">3,200 – 4,000 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Floor Rise</div>
-                <div class="spec-val">G + 5 Floors</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Water</div>
-                <div class="spec-val">24/7 Supply</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">₹3.2 Cr*</div>
+                <div class="fd-price-sub">Onwards</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects#padma-heights" class="btn btn-primary btn-sm">
-                View Details <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA: Application in progress</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 3. Ongoing: SSV Krishna Heights, Parvathapur -->
-        <article class="project-card" data-category="ongoing apartments" data-status="ongoing">
-          <div class="project-thumb">
-            <span class="project-status status-ongoing">Ongoing Project</span>
-            <span class="project-category">Premium Living</span>
-            <img src="images/projects/thirumala-modern.jpg" alt="SSV Krishna Heights Parvathapur">
+        <!-- 3. TN Business Park (Commercial) -->
+        <a href="projects#commercial" class="project-card fd-card" data-category="commercial" data-status="commercial">
+          <div class="fd-thumb">
+            <span class="fd-badge">Commercial</span>
+            <img src="images/projects/ai-commercial-arcade.jpg" alt="TN Business Park Financial District">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Parvathapur, Peerzadiguda
-            </div>
-            <h3 class="project-name">SSV Krishna Heights</h3>
-            <p class="project-desc">
-              Nestled in a peaceful residential pocket of Parvathapur, providing quiet neighborhood comfort combined
-              with lightning-fast connectivity to Warangal Highway and Uppal Junction.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Units</div>
-                <div class="spec-val">2 & 3 BHK</div>
+          <div class="fd-body">
+            <h3 class="fd-title">TN Business Park</h3>
+            <div class="fd-location">Financial District, Hyderabad</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">Office & Retail</div>
+                <div class="fd-spec-sub">From 1,000 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Structure</div>
-                <div class="spec-val">RCC Framed</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Status</div>
-                <div class="spec-val">In Progress</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">On request</div>
+                <div class="fd-price-sub">Pricing</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects#krishna-heights" class="btn btn-primary btn-sm">
-                View Details <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA No: P024000XXXXX</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 4. Upcoming: Thirumala Elite Meadows (Villas) -->
-        <article class="project-card" data-category="upcoming villas" data-status="upcoming">
-          <div class="project-thumb">
-            <span class="project-status status-upcoming">Upcoming / Pre-Launch</span>
-            <span class="project-category">Gated Luxury Villas</span>
-            <img src="images/projects/independent-houses.jpg" alt="Thirumala Elite Meadows Luxury Villas">
+        <!-- 4. SSV Padma Heights (Ongoing) -->
+        <a href="project-ssv-padma-heights" class="project-card fd-card" data-category="ongoing apartments" data-status="ongoing">
+          <div class="fd-thumb">
+            <span class="fd-badge">Ongoing</span>
+            <img src="images/projects/ai-ssv-padma-heights.jpg" alt="SSV Padma Heights Peerzadiguda">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Pocharam / Ghatkesar Growth Corridor
-            </div>
-            <h3 class="project-name">Thirumala Elite Meadows</h3>
-            <p class="project-desc">
-              Upcoming boutique gated enclave featuring signature 3 & 4 BHK duplex villas with private terrace gardens,
-              luxury clubhouse, 40-ft internal blacktop roads, and 100% authentic Vastu design.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Config</div>
-                <div class="spec-val">3 & 4 BHK</div>
+          <div class="fd-body">
+            <h3 class="fd-title">SSV Padma Heights</h3>
+            <div class="fd-location">Peerzadiguda, Near Uppal Depot</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">2 & 3 BHK</div>
+                <div class="fd-spec-sub">1,150 – 1,580 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Plot Sizes</div>
-                <div class="spec-val">180 - 250 Sq Yd</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Layout</div>
-                <div class="spec-val">HMDA Planned</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">₹68 Lakhs*</div>
+                <div class="fd-price-sub">Onwards</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects" class="btn btn-primary btn-sm">
-                Pre-Register <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA No: P02400003892</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 5. Upcoming: SSV Grandeur Towers -->
-        <article class="project-card" data-category="upcoming apartments" data-status="upcoming">
-          <div class="project-thumb">
-            <span class="project-status status-upcoming">Launching Soon</span>
-            <span class="project-category">High-Rise Towers</span>
-            <img src="images/projects/keshav-residency.jpg" alt="SSV Grandeur Towers Boduppal">
+        <!-- 5. SSV Krishna Heights (Ongoing) -->
+        <a href="project-ssv-krishna-heights" class="project-card fd-card" data-category="ongoing apartments" data-status="ongoing">
+          <div class="fd-thumb">
+            <span class="fd-badge">Ongoing</span>
+            <img src="images/projects/ai-ssv-krishna-heights.jpg" alt="SSV Krishna Heights Parvathapur">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Boduppal - Peerzadiguda Link Road
-            </div>
-            <h3 class="project-name">SSV Grandeur Towers</h3>
-            <p class="project-desc">
-              A visionary high-rise residential landmark with panoramic sky views, solar-powered common illumination, EV
-              charging bays, children's play court, and instant access to Uppal Metro.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Units</div>
-                <div class="spec-val">2 & 3 BHK</div>
+          <div class="fd-body">
+            <h3 class="fd-title">SSV Krishna Heights</h3>
+            <div class="fd-location">Parvathapur, Peerzadiguda</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">2 & 3 BHK</div>
+                <div class="fd-spec-sub">1,120 – 1,550 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Floors</div>
-                <div class="spec-val">G + 9 Floors</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Status</div>
-                <div class="spec-val">Early Bird Open</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">₹62 Lakhs*</div>
+                <div class="fd-price-sub">Onwards</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects" class="btn btn-primary btn-sm">
-                Pre-Register <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA No: P02400005114</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 6. Commercial: SV's Manik Arcade (Ameerpet) -->
-        <article class="project-card" data-category="commercial" data-status="commercial">
-          <div class="project-thumb">
-            <span class="project-status status-commercial">Commercial Landmark</span>
-            <span class="project-category">Retail & Office Complex</span>
-            <img src="images/projects/sv-manik-arcade.jpg" alt="SV's Manik Arcade Ameerpet">
+        <!-- 6. SSV Grandeur Towers (Upcoming) -->
+        <a href="projects#grandeur-towers" class="project-card fd-card" data-category="upcoming apartments" data-status="upcoming">
+          <div class="fd-thumb">
+            <span class="fd-badge">Upcoming</span>
+            <img src="images/projects/ai-grandeur-towers.jpg" alt="SSV Grandeur Towers Boduppal">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Bulkampet, Ameerpet Central
-            </div>
-            <h3 class="project-name">SV's Manik Arcade</h3>
-            <p class="project-desc">
-              High-profile commercial complex housing prominent bank branches, retail anchor brands, multi-specialty
-              clinics, and executive corporate offices in central Hyderabad's prime commerce hub.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Type</div>
-                <div class="spec-val">Commercial Hub</div>
+          <div class="fd-body">
+            <h3 class="fd-title">SSV Grandeur Towers</h3>
+            <div class="fd-location">Boduppal - Peerzadiguda Link Road</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">2.5 & 3 BHK High-Rise</div>
+                <div class="fd-spec-sub">1,250 – 1,950 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Structure</div>
-                <div class="spec-val">Heavy-Duty RCC</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Occupancy</div>
-                <div class="spec-val">100% Leased</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">₹85 Lakhs*</div>
+                <div class="fd-price-sub">Onwards</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects" class="btn btn-primary btn-sm">
-                View Details <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA: Application in progress</div>
           </div>
-        </article>
+        </a>
 
-        <!-- 7. Commercial: D-Mart Commercial Complex (Ramanthapur) -->
-        <article class="project-card" data-category="commercial" data-status="commercial">
-          <div class="project-thumb">
-            <span class="project-status status-commercial">Delivered Commercial</span>
-            <span class="project-category">Large-Scale Retail</span>
-            <img src="images/projects/sudhakar-building.jpg" alt="D-Mart Ramanthapur Commercial Complex">
+        <!-- 7. D-Mart Commercial Complex (Commercial) -->
+        <a href="project-dmart-complex" class="project-card fd-card" data-category="commercial" data-status="commercial">
+          <div class="fd-thumb">
+            <span class="fd-badge">Commercial</span>
+            <img src="images/projects/sudhakar-building.jpg" alt="D-Mart Commercial Complex Ramanthapur">
           </div>
-          <div class="project-body">
-            <div class="project-location">
-              <i class="fa-solid fa-location-dot"></i> Ramanthapur Main Road, Hyderabad
-            </div>
-            <h3 class="project-name">D-Mart Commercial Complex</h3>
-            <p class="project-desc">
-              Engineered for high footfall velocity and expansive column-free shopping halls, featuring dedicated
-              basement car parking aprons, wide loading ramps, and multi-tier logistic docks.
-            </p>
-            <div class="project-specs">
-              <div class="spec-item">
-                <div class="spec-label">Scale</div>
-                <div class="spec-val">Mega Retail</div>
+          <div class="fd-body">
+            <h3 class="fd-title">D-Mart Commercial Complex</h3>
+            <div class="fd-location">Ramanthapur Main Road, Hyderabad</div>
+            <div class="fd-specs-row">
+              <div class="fd-spec-col">
+                <div class="fd-spec-main">Mega Retail Anchor</div>
+                <div class="fd-spec-sub">From 1,500 sq. ft.</div>
               </div>
-              <div class="spec-item">
-                <div class="spec-label">Location</div>
-                <div class="spec-val">Main Arterial Rd</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Quality</div>
-                <div class="spec-val">Grade-A RCC</div>
+              <div class="fd-price-col">
+                <div class="fd-price-main">Leased / Prime</div>
+                <div class="fd-price-sub">High Yield</div>
               </div>
             </div>
-            <div class="project-footer">
-              <a href="contact#site-visit-form" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-paper-plane"></i> Enquire Now
-              </a>
-              <a href="projects" class="btn btn-primary btn-sm">
-                View Details <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
+            <div class="fd-divider"></div>
+            <div class="fd-rera">TG-RERA No: P02400000874</div>
           </div>
-        </article>
+        </a>
+
       </div>
 
-      <div class="text-center" style="margin-top: 3.5rem;">
-        <a href="projects" class="btn btn-secondary">
-          <i class="fa-solid fa-list-check"></i> View All Projects
+      <!-- Bottom View All Button -->
+      <div class="text-center" style="margin-top: 50px;">
+        <a href="projects" class="fd-view-all-btn">
+          View All Projects <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
         </a>
       </div>
     </div>
