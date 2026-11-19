@@ -1,5 +1,0 @@
-# Deny direct browser access to data files
-<Files "*">
-    Order Deny,Allow
-    Deny from all
-</Files>

@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /scratch/
-Disallow: /.git/
-
-Sitemap: https://thirumalaconstructions.com/sitemap.xml

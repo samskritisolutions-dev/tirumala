@@ -1,8 +1,0 @@
-{
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/process-form.php", "destination": "/api/process-form" },
-    { "source": "/process-form", "destination": "/api/process-form" }
-  ]
-}
