@@ -1,451 +1,679 @@
 /**
- * TIRUMALA NIRMAAN
- * Main Interactive Application Script
+ * TIRUMALA NIRMAAN - LUXURY ARCHITECTURAL JAVASCRIPT (v9.0)
+ * Handles Hero Showcase Slider, Theme Switcher, Filters, Carousels & Modals
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile Navigation Drawer
-  const mobileToggle = document.getElementById('mobileToggle');
-  const drawerClose = document.getElementById('drawerClose');
-  const mobileDrawer = document.getElementById('mobileDrawer');
-  const drawerOverlay = document.getElementById('drawerOverlay');
 
-  function openDrawer() {
-    if (mobileDrawer) mobileDrawer.classList.add('open');
-    if (drawerOverlay) drawerOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+  // Locked Luxury Colour Palette: Deep Navy, Silver & White
+  const htmlRoot = document.documentElement;
+  htmlRoot.setAttribute('data-theme', 'deep-navy');
 
-  function closeDrawer() {
-    if (mobileDrawer) mobileDrawer.classList.remove('open');
-    if (drawerOverlay) drawerOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  // =========================================================================
+  // 2. Sticky Header & Floating Contact Visibility on Scroll (Show after 300px)
+  // =========================================================================
+  const siteHeader = document.getElementById('siteHeader');
+  const floatingActions = document.querySelector('.floating-actions');
 
-  if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
-  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-  if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
-
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeDrawer();
-    });
-  });
-
-  // Sticky Header measurement & shadow
-  const siteHeader = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
+  function handleScroll() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 30) {
       siteHeader?.classList.add('scrolled');
     } else {
       siteHeader?.classList.remove('scrolled');
     }
-  }, { passive: true });
+
+    // Show floating WhatsApp and Call buttons only after scrolling 300px
+    if (scrollY > 300) {
+      floatingActions?.classList.add('visible');
+    } else {
+      floatingActions?.classList.remove('visible');
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll(); // Initial check on load
 
   // =========================================================================
-  // The 3 Showcase Sliders (High-Rise Apartments, Gated Villas, Commercial)
+  // 3. Mobile Navigation Drawer
+  // =========================================================================
+  const mobileToggle = document.getElementById('mobileToggle');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose = document.getElementById('drawerClose');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  function openDrawer() {
+    mobileDrawer?.classList.add('active');
+    drawerOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    mobileDrawer?.classList.remove('active');
+    drawerOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  mobileToggle?.addEventListener('click', openDrawer);
+  drawerClose?.addEventListener('click', closeDrawer);
+  drawerOverlay?.addEventListener('click', closeDrawer);
+  mobileNavLinks.forEach(link => link.addEventListener('click', closeDrawer));
+
+  // =========================================================================
+  // 4. Cinematic Hero Showcase Slider (Smooth Auto-play, Arrows & Mobile Swipe)
   // =========================================================================
   const heroSlider = document.getElementById('mainHeroSlider');
-  if (heroSlider) {
-    const slides = heroSlider.querySelectorAll('.hero-slide');
-    const dots = heroSlider.querySelectorAll('.slider-dot');
-    const prevBtn = document.getElementById('sliderPrev');
-    const nextBtn = document.getElementById('sliderNext');
-    const progressBar = document.getElementById('sliderProgressBar');
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.slider-dot');
+  const prevBtn = document.getElementById('sliderPrev');
+  const nextBtn = document.getElementById('sliderNext');
+  const progressBar = document.getElementById('sliderProgressBar');
 
-    let currentSlide = 0;
-    const totalSlides = slides.length;
-    const slideDuration = 6000; // 6 seconds per slide
-    let slideTimer = null;
-    let isPaused = false;
+  let currentSlide = 0;
+  const slideCount = slides.length;
+  const slideDuration = 6000; // 6 seconds
+  let slideInterval = null;
+  let progressStartTime = 0;
+  let animFrameId = null;
 
-    function goToSlide(index) {
-      if (index < 0) {
-        currentSlide = totalSlides - 1;
-      } else if (index >= totalSlides) {
-        currentSlide = 0;
+  function updateProgressBar() {
+    const elapsed = Date.now() - progressStartTime;
+    const progress = Math.min((elapsed / slideDuration) * 100, 100);
+    if (progressBar) progressBar.style.width = `${progress}%`;
+
+    if (elapsed < slideDuration) {
+      animFrameId = requestAnimationFrame(updateProgressBar);
+    }
+  }
+
+  function resetProgressBar() {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    if (progressBar) progressBar.style.width = '0%';
+    progressStartTime = Date.now();
+    animFrameId = requestAnimationFrame(updateProgressBar);
+  }
+
+  function goToSlide(index) {
+    if (slideCount === 0) return;
+    if (index < 0) index = slideCount - 1;
+    if (index >= slideCount) index = 0;
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+
+    // Synchronize active menu link with current slide
+    const allNavLinks = document.querySelectorAll('[data-slide-target]');
+    allNavLinks.forEach(link => {
+      const target = parseInt(link.getAttribute('data-slide-target'), 10);
+      link.classList.toggle('active', target === index);
+    });
+
+    currentSlide = index;
+    resetProgressBar();
+  }
+
+  function nextSlide() {
+    goToSlide(currentSlide + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentSlide - 1);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    progressStartTime = Date.now();
+    animFrameId = requestAnimationFrame(updateProgressBar);
+    slideInterval = setInterval(nextSlide, slideDuration);
+  }
+
+  function stopAutoplay() {
+    if (slideInterval) clearInterval(slideInterval);
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+  }
+
+  prevBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    prevSlide();
+    startAutoplay();
+  });
+
+  nextBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    nextSlide();
+    startAutoplay();
+  });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const idx = parseInt(dot.getAttribute('data-slide') || '0', 10);
+      goToSlide(idx);
+      startAutoplay();
+    });
+  });
+
+  // Direct slide switching from header and mobile drawer navigation links
+  const slideTriggers = document.querySelectorAll('[data-slide-target]');
+  slideTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      const target = parseInt(trigger.getAttribute('data-slide-target'), 10);
+      if (!isNaN(target)) {
+        e.preventDefault();
+        goToSlide(target);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        startAutoplay();
+        closeDrawer();
+      }
+    });
+  });
+
+  // Touch Swipe for Mobile Hero Slider (Precise clientX/clientY detection)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isSwiping = false;
+
+  heroSlider?.addEventListener('touchstart', e => {
+    if (!e.touches || e.touches.length === 0) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isSwiping = true;
+  }, { passive: true });
+
+  heroSlider?.addEventListener('touchend', e => {
+    if (!isSwiping || !e.changedTouches || e.changedTouches.length === 0) return;
+    isSwiping = false;
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchStartX - touchEndX;
+    const diffY = touchStartY - touchEndY;
+
+    // Minimum 35px horizontal movement, larger than vertical deviation
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        nextSlide();
       } else {
-        currentSlide = index;
-      }
-
-      // Update slide elements
-      slides.forEach((slide, i) => {
-        if (i === currentSlide) {
-          slide.classList.add('active');
-        } else {
-          slide.classList.remove('active');
-        }
-      });
-
-      // Update dot indicators
-      dots.forEach((dot, i) => {
-        if (i === currentSlide) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
-      });
-
-      // Update active navigation links across header and mobile drawer
-      const allNavLinks = document.querySelectorAll('[data-slide-target]');
-      allNavLinks.forEach(link => {
-        const target = parseInt(link.getAttribute('data-slide-target'), 10);
-        if (target === currentSlide) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-
-      resetProgress();
-    }
-
-    function nextSlide() {
-      goToSlide(currentSlide + 1);
-    }
-
-    function prevSlide() {
-      goToSlide(currentSlide - 1);
-    }
-
-    function resetProgress() {
-      if (progressBar) {
-        progressBar.style.transition = 'none';
-        progressBar.style.width = '0%';
-        void progressBar.offsetWidth;
-        if (!isPaused) {
-          progressBar.style.transition = `width ${slideDuration}ms linear`;
-          progressBar.style.width = '100%';
-        }
-      }
-
-      clearInterval(slideTimer);
-      slideTimer = setInterval(() => {
-        if (!isPaused) {
-          nextSlide();
-        }
-      }, slideDuration);
-    }
-
-    // Prev / Next Navigation Arrows
-    if (nextBtn) {
-      nextBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        nextSlide();
-      });
-    }
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        prevSlide();
-      });
-    }
-
-    // Dot indicators
-    dots.forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetIndex = parseInt(dot.getAttribute('data-slide'), 10);
-        if (!isNaN(targetIndex)) {
-          goToSlide(targetIndex);
-        }
-      });
-    });
-
-    // Navigation links (Desktop navbar, mobile drawer, and footer)
-    const slideTriggers = document.querySelectorAll('[data-slide-target]');
-    slideTriggers.forEach(trigger => {
-      trigger.addEventListener('click', (e) => {
-        const target = parseInt(trigger.getAttribute('data-slide-target'), 10);
-        if (!isNaN(target)) {
-          e.preventDefault();
-          goToSlide(target);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          closeDrawer();
-        }
-      });
-    });
-
-    // Pause on Hover
-    heroSlider.addEventListener('mouseenter', () => {
-      isPaused = true;
-      if (progressBar) {
-        const computedWidth = window.getComputedStyle(progressBar).width;
-        progressBar.style.transition = 'none';
-        progressBar.style.width = computedWidth;
-      }
-    });
-
-    heroSlider.addEventListener('mouseleave', () => {
-      isPaused = false;
-      resetProgress();
-    });
-
-    // Touch Swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    heroSlider.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    heroSlider.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-
-    function handleSwipe() {
-      const threshold = 40;
-      if (touchEndX < touchStartX - threshold) {
-        nextSlide();
-      } else if (touchEndX > touchStartX + threshold) {
         prevSlide();
       }
+      startAutoplay();
     }
+  }, { passive: true });
 
-    // Keyboard navigation when at the top
-    window.addEventListener('keydown', (e) => {
-      if (window.scrollY < 500) {
-        if (e.key === 'ArrowRight') nextSlide();
-        if (e.key === 'ArrowLeft') prevSlide();
-      }
-    });
+  // Pause autoplay only when hovering over actionable controls, not entire window
+  const heroControls = document.querySelectorAll('.slider-arrow, .slider-dots, .hero-slide .btn-slider-sm, .hero-slide .btn-slider-sm-outline');
+  heroControls.forEach(ctrl => {
+    ctrl.addEventListener('mouseenter', stopAutoplay);
+    ctrl.addEventListener('mouseleave', startAutoplay);
+  });
 
-    // Start on first slide
+  if (slides.length > 0) {
     goToSlide(0);
+    startAutoplay();
   }
 
   // =========================================================================
-  // Book a Site Visit Modal Logic
+  // 5. Signature Developments Portfolio Filter
+  // =========================================================================
+  const devTabs = document.querySelectorAll('.dev-tab');
+  const devCards = document.querySelectorAll('.dev-card');
+
+  devTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      devTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const filter = tab.getAttribute('data-filter') || 'all';
+
+      devCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'flex';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // =========================================================================
+  // 6. Lifestyle & Amenities Filter
+  // =========================================================================
+  const amenityTabs = document.querySelectorAll('.amenity-tab');
+  const amenityCards = document.querySelectorAll('.amenity-card');
+
+  amenityTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      amenityTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const filter = tab.getAttribute('data-filter') || 'all';
+
+      amenityCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // =========================================================================
+  // 7. Infrastructure & Landmark Developments Horizontal Carousel
+  // =========================================================================
+  const infraWrap = document.getElementById('infraTrackWrap') || document.querySelector('.infra-track-wrap');
+  const infraPrev = document.getElementById('infraPrev');
+  const infraNext = document.getElementById('infraNext');
+
+  if (infraWrap && infraPrev && infraNext) {
+    const getScrollAmount = () => {
+      const card = infraWrap.querySelector('.infra-card');
+      return card ? card.offsetWidth + 28 : 380;
+    };
+
+    infraPrev.addEventListener('click', (e) => {
+      e.preventDefault();
+      infraWrap.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    infraNext.addEventListener('click', (e) => {
+      e.preventDefault();
+      infraWrap.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    // Desktop Mouse Drag-to-Scroll
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    infraWrap.addEventListener('mousedown', (e) => {
+      isDown = true;
+      infraWrap.style.cursor = 'grabbing';
+      startX = e.pageX - infraWrap.offsetLeft;
+      scrollLeft = infraWrap.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDown) {
+        isDown = false;
+        infraWrap.style.cursor = 'grab';
+      }
+    });
+
+    infraWrap.addEventListener('mouseleave', () => {
+      isDown = false;
+      infraWrap.style.cursor = 'grab';
+    });
+
+    infraWrap.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - infraWrap.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      infraWrap.scrollLeft = scrollLeft - walk;
+    });
+  }
+
+  // =========================================================================
+  // 8. Other Business Verticals Carousel (Smooth Scroll, Snap, Loop & Drag)
+  // =========================================================================
+  const vertContainer = document.getElementById('verticalsSliderContainer') || document.querySelector('.verticals-slider-container');
+  const verticalsPrev = document.getElementById('verticalsPrev');
+  const verticalsNext = document.getElementById('verticalsNext');
+  const verticalsDots = document.querySelectorAll('.verticals-dot');
+
+  if (vertContainer) {
+    const cards = Array.from(vertContainer.querySelectorAll('.vertical-card'));
+
+    const getScrollStep = () => {
+      const card = cards[0];
+      return card ? card.offsetWidth + 24 : 344;
+    };
+
+    const updateActiveDot = () => {
+      const scrollLeft = vertContainer.scrollLeft;
+      const maxScroll = vertContainer.scrollWidth - vertContainer.clientWidth;
+      let activeIndex = 0;
+
+      if (maxScroll > 10 && scrollLeft >= maxScroll - 25) {
+        activeIndex = cards.length - 1;
+      } else {
+        let minDiff = Infinity;
+        cards.forEach((card, idx) => {
+          const cardLeft = card.offsetLeft - vertContainer.offsetLeft;
+          const diff = Math.abs(cardLeft - scrollLeft);
+          if (diff < minDiff) {
+            minDiff = diff;
+            activeIndex = idx;
+          }
+        });
+      }
+
+      verticalsDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === activeIndex);
+      });
+    };
+
+    // Next button: scrolls to next card or wraps to start
+    verticalsNext?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const scrollLeft = vertContainer.scrollLeft;
+      const maxScroll = vertContainer.scrollWidth - vertContainer.clientWidth;
+
+      if (scrollLeft >= maxScroll - 20) {
+        // At end -> smooth wrap back to start
+        vertContainer.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Find next card to the right
+        const nextCard = cards.find(card => (card.offsetLeft - vertContainer.offsetLeft) > scrollLeft + 20);
+        if (nextCard) {
+          vertContainer.scrollTo({ left: nextCard.offsetLeft - vertContainer.offsetLeft, behavior: 'smooth' });
+        } else {
+          vertContainer.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+        }
+      }
+    });
+
+    // Prev button: scrolls to prev card or wraps to end
+    verticalsPrev?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const scrollLeft = vertContainer.scrollLeft;
+      const maxScroll = vertContainer.scrollWidth - vertContainer.clientWidth;
+
+      if (scrollLeft <= 15) {
+        // At start -> smooth wrap to end
+        vertContainer.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      } else {
+        // Find previous card to the left
+        const prevCards = cards.filter(card => (card.offsetLeft - vertContainer.offsetLeft) < scrollLeft - 20);
+        if (prevCards.length > 0) {
+          const prevCard = prevCards[prevCards.length - 1];
+          vertContainer.scrollTo({ left: prevCard.offsetLeft - vertContainer.offsetLeft, behavior: 'smooth' });
+        } else {
+          vertContainer.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      }
+    });
+
+    // Dot click navigation
+    verticalsDots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (cards[idx]) {
+          const targetLeft = cards[idx].offsetLeft - vertContainer.offsetLeft;
+          vertContainer.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Scroll listener with RAF throttling
+    let isScrollTicking = false;
+    vertContainer.addEventListener('scroll', () => {
+      if (!isScrollTicking) {
+        window.requestAnimationFrame(() => {
+          updateActiveDot();
+          isScrollTicking = false;
+        });
+        isScrollTicking = true;
+      }
+    }, { passive: true });
+
+    // Desktop Mouse Drag-to-Scroll (free of smooth-scroll lag and ghost images)
+    let isVertDown = false;
+    let startVertX = 0;
+    let scrollVertLeft = 0;
+
+    vertContainer.addEventListener('mousedown', (e) => {
+      isVertDown = true;
+      vertContainer.style.cursor = 'grabbing';
+      vertContainer.style.scrollBehavior = 'auto'; // Instant response during mouse drag
+      vertContainer.style.scrollSnapType = 'none'; // Disable snapping while dragging
+      startVertX = e.pageX - vertContainer.offsetLeft;
+      scrollVertLeft = vertContainer.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isVertDown) {
+        isVertDown = false;
+        vertContainer.style.cursor = 'grab';
+        vertContainer.style.scrollBehavior = 'smooth';
+        vertContainer.style.scrollSnapType = 'x mandatory';
+        updateActiveDot();
+      }
+    });
+
+    vertContainer.addEventListener('mouseleave', () => {
+      if (isVertDown) {
+        isVertDown = false;
+        vertContainer.style.cursor = 'grab';
+        vertContainer.style.scrollBehavior = 'smooth';
+        vertContainer.style.scrollSnapType = 'x mandatory';
+        updateActiveDot();
+      }
+    });
+
+    vertContainer.addEventListener('mousemove', (e) => {
+      if (!isVertDown) return;
+      e.preventDefault();
+      const x = e.pageX - vertContainer.offsetLeft;
+      const walk = (x - startVertX);
+      vertContainer.scrollLeft = scrollVertLeft - walk;
+    });
+
+    // Initial dot sync
+    updateActiveDot();
+  }
+
+  // =========================================================================
+  // 9. Voices of Trust Testimonials Slider
+  // =========================================================================
+  const tSlides = document.querySelectorAll('.testimonial-slide');
+  const tTabs = document.querySelectorAll('.t-pill-tab');
+  const tPrev = document.getElementById('tPrevBtn');
+  const tNext = document.getElementById('tNextBtn');
+
+  let currentTSlide = 0;
+  const totalTSlides = tSlides.length;
+
+  function showTSlide(index) {
+    if (index < 0) index = totalTSlides - 1;
+    if (index >= totalTSlides) index = 0;
+
+    tSlides.forEach((s, i) => s.classList.toggle('active', i === index));
+    tTabs.forEach((tab, i) => {
+      tab.classList.toggle('active', i === index);
+      tab.setAttribute('aria-selected', i === index ? 'true' : 'false');
+    });
+
+    currentTSlide = index;
+  }
+
+  tPrev?.addEventListener('click', () => showTSlide(currentTSlide - 1));
+  tNext?.addEventListener('click', () => showTSlide(currentTSlide + 1));
+
+  tTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = parseInt(tab.getAttribute('data-tab') || '0', 10);
+      showTSlide(idx);
+    });
+  });
+
+  // =========================================================================
+  // 10. Modals: Site Visit & Cinematic Video Walkthrough
   // =========================================================================
   const visitModalOverlay = document.getElementById('visitModalOverlay');
   const visitModalClose = document.getElementById('visitModalClose');
-  const openVisitBtn = document.getElementById('openVisitBtn');
-  const drawerVisitBtn = document.getElementById('drawerVisitBtn');
-  const openVisitTriggers = document.querySelectorAll('.open-visit-btn');
-  const siteVisitForm = document.getElementById('siteVisitForm');
-  const projectSelect = document.getElementById('visitProject');
+  const openVisitBtns = document.querySelectorAll('.open-visit-btn');
+  const visitProjectSelect = document.getElementById('visitProject');
 
-  function openVisitModal(preselectedProject) {
-    if (preselectedProject && projectSelect) {
-      const options = Array.from(projectSelect.options);
-      const match = options.find(o => o.value.toLowerCase().includes(preselectedProject.toLowerCase()));
-      if (match) {
-        projectSelect.value = match.value;
+  function openVisitModal(projectPrefill) {
+    if (projectPrefill && visitProjectSelect) {
+      for (let i = 0; i < visitProjectSelect.options.length; i++) {
+        if (visitProjectSelect.options[i].value.toLowerCase().includes(projectPrefill.toLowerCase())) {
+          visitProjectSelect.selectedIndex = i;
+          break;
+        }
       }
     }
-    if (visitModalOverlay) {
-      visitModalOverlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      const nameInput = document.getElementById('visitName');
-      if (nameInput) setTimeout(() => nameInput.focus(), 150);
-    }
-    closeDrawer();
+    visitModalOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
   function closeVisitModal() {
-    if (visitModalOverlay) {
-      visitModalOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
+    visitModalOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
   }
 
-  if (openVisitBtn) {
-    openVisitBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openVisitModal();
-    });
-  }
-
-  if (drawerVisitBtn) {
-    drawerVisitBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openVisitModal();
-    });
-  }
-
-  openVisitTriggers.forEach(btn => {
+  openVisitBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const proj = btn.getAttribute('data-project');
+      const proj = btn.getAttribute('data-project') || '';
       openVisitModal(proj);
     });
   });
 
-  if (visitModalClose) {
-    visitModalClose.addEventListener('click', closeVisitModal);
+  visitModalClose?.addEventListener('click', closeVisitModal);
+  visitModalOverlay?.addEventListener('click', (e) => {
+    if (e.target === visitModalOverlay) closeVisitModal();
+  });
+
+  // Cinematic Video Modal
+  const videoModalOverlay = document.getElementById('videoModalOverlay');
+  const videoModalClose = document.getElementById('videoModalClose');
+  const openVideoBtns = document.querySelectorAll('.open-video-modal');
+
+  function openVideoModal() {
+    videoModalOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
-  if (visitModalOverlay) {
-    visitModalOverlay.addEventListener('click', (e) => {
-      if (e.target === visitModalOverlay) {
-        closeVisitModal();
+  function closeVideoModal() {
+    videoModalOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  openVideoBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openVideoModal();
+    });
+  });
+
+  videoModalClose?.addEventListener('click', closeVideoModal);
+  videoModalOverlay?.addEventListener('click', (e) => {
+    if (e.target === videoModalOverlay) closeVideoModal();
+  });
+
+  // ESC key to close any active modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeVisitModal();
+      closeVideoModal();
+      closeDrawer();
+    }
+  });
+
+  // =========================================================================
+  // 11. WhatsApp Form Submission Handlers
+  // =========================================================================
+  function handleWhatsAppBooking(name, phone, email, project, date) {
+    const phoneClean = (phone || '').replace(/\D/g, '');
+    let msg = `*New Site Visit Request - Tirumala Nirmaan*%0A`;
+    msg += `--------------------------------%0A`;
+    msg += `*Name:* ${encodeURIComponent(name)}%0A`;
+    msg += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+    if (email) msg += `*Email:* ${encodeURIComponent(email)}%0A`;
+    msg += `*Interested Property:* ${encodeURIComponent(project)}%0A`;
+    if (date) msg += `*Preferred Date:* ${encodeURIComponent(date)}%0A`;
+    msg += `--------------------------------%0A`;
+    msg += `Requested via thirumalaconstructions.com`;
+
+    const waUrl = `https://wa.me/919849306675?text=${msg}`;
+    window.open(waUrl, '_blank');
+  }
+
+  // On-page Visit Form
+  const onpageForm = document.getElementById('onpageVisitForm');
+  onpageForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('onpageName')?.value;
+    const phone = document.getElementById('onpagePhone')?.value;
+    const email = document.getElementById('onpageEmail')?.value;
+    const project = document.getElementById('onpageProject')?.value;
+    const date = document.getElementById('onpageDate')?.value;
+
+    handleWhatsAppBooking(name, phone, email, project, date);
+  });
+
+  // Modal Visit Form
+  const modalForm = document.getElementById('siteVisitForm');
+  modalForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('visitName')?.value;
+    const phone = document.getElementById('visitPhone')?.value;
+    const project = document.getElementById('visitProject')?.value;
+    const date = document.getElementById('visitDate')?.value;
+
+    handleWhatsAppBooking(name, phone, '', project, date);
+    closeVisitModal();
+  });
+
+
+  // =========================================================================
+  // Full-Width Video Hero Playback & Audio Controls (Sattva Inspired)
+  // =========================================================================
+  const heroVideo = document.getElementById('heroVideo');
+  const heroMuteToggle = document.getElementById('heroMuteToggle');
+  const heroMuteIcon = document.getElementById('heroMuteIcon');
+  const heroMuteText = document.getElementById('heroMuteText');
+  const heroPlayToggle = document.getElementById('heroPlayToggle');
+  const heroPlayIcon = document.getElementById('heroPlayIcon');
+  const heroPlayText = document.getElementById('heroPlayText');
+
+  if (heroVideo) {
+    // Ensure autoplay starts properly
+    heroVideo.play().catch(() => {
+      // Autoplay with sound restricted, ensure muted
+      heroVideo.muted = true;
+      heroVideo.play().catch(() => {});
+    });
+
+    // Mute / Unmute Toggle
+    heroMuteToggle?.addEventListener('click', () => {
+      if (heroVideo.muted) {
+        heroVideo.muted = false;
+        if (heroMuteIcon) heroMuteIcon.className = 'fa-solid fa-volume-high';
+        if (heroMuteText) heroMuteText.textContent = 'Mute';
+      } else {
+        heroVideo.muted = true;
+        if (heroMuteIcon) heroMuteIcon.className = 'fa-solid fa-volume-xmark';
+        if (heroMuteText) heroMuteText.textContent = 'Unmute';
+      }
+    });
+
+    // Pause / Play Toggle
+    heroPlayToggle?.addEventListener('click', () => {
+      if (heroVideo.paused) {
+        heroVideo.play();
+        if (heroPlayIcon) heroPlayIcon.className = 'fa-solid fa-pause';
+        if (heroPlayText) heroPlayText.textContent = 'Pause';
+      } else {
+        heroVideo.pause();
+        if (heroPlayIcon) heroPlayIcon.className = 'fa-solid fa-play';
+        if (heroPlayText) heroPlayText.textContent = 'Play';
       }
     });
   }
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && visitModalOverlay?.classList.contains('open')) {
-      closeVisitModal();
-    }
-  });
-
-  // Handle Site Visit Form Submission -> WhatsApp Link
-  if (siteVisitForm) {
-    siteVisitForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('visitName')?.value.trim() || '';
-      const phone = document.getElementById('visitPhone')?.value.trim() || '';
-      const project = projectSelect?.value || 'General Inquiry';
-      const date = document.getElementById('visitDate')?.value || 'Flexible';
-
-      const message = `Hello Tirumala Nirmaan, I would like to book a site visit.%0A%0A*Name:* ${encodeURIComponent(name)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Project:* ${encodeURIComponent(project)}%0A*Preferred Date:* ${encodeURIComponent(date)}`;
-
-      const waUrl = `https://wa.me/919849306675?text=${message}`;
-      window.open(waUrl, '_blank');
-      closeVisitModal();
-      siteVisitForm.reset();
-    });
-  }
-
-  // Handle On-Page Site Visit Form Submission -> WhatsApp
-  const onpageVisitForm = document.getElementById('onpageVisitForm');
-  if (onpageVisitForm) {
-    onpageVisitForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('onpageName')?.value.trim() || '';
-      const phone = document.getElementById('onpagePhone')?.value.trim() || '';
-      const email = document.getElementById('onpageEmail')?.value.trim() || 'Not specified';
-      const project = document.getElementById('onpageProject')?.value || 'All Developments';
-      const date = document.getElementById('onpageDate')?.value || 'Flexible';
-
-      const message = `Hello Tirumala Nirmaan, I would like to schedule a Site Visit:%0A%0A*Full Name:* ${encodeURIComponent(name)}%0A*Phone / WhatsApp:* ${encodeURIComponent(phone)}%0A*Email:* ${encodeURIComponent(email)}%0A*Property:* ${encodeURIComponent(project)}%0A*Preferred Date:* ${encodeURIComponent(date)}%0A%0APlease confirm my appointment.`;
-
-      const waUrl = `https://wa.me/919849306675?text=${message}`;
-      window.open(waUrl, '_blank');
-      onpageVisitForm.reset();
-    });
-  }
-
-  // =========================================================================
-  // Section 5: Voices of Trust Carousel Logic (Director + 2 Testimonials)
-  // =========================================================================
-  const tSlides = document.querySelectorAll('.testimonial-slide');
-  const tTabs = document.querySelectorAll('.t-pill-tab');
-  const tPrevBtn = document.getElementById('tPrevBtn');
-  const tNextBtn = document.getElementById('tNextBtn');
-  const tSliderWrap = document.getElementById('testimonialSlider');
-
-  if (tSlides.length > 0) {
-    let currentTIndex = 0;
-    let tTimer = null;
-
-    function showTestimonial(index) {
-      if (index < 0) index = tSlides.length - 1;
-      if (index >= tSlides.length) index = 0;
-      currentTIndex = index;
-
-      tSlides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === currentTIndex);
-      });
-
-      tTabs.forEach((tab, i) => {
-        const isActive = (i === currentTIndex);
-        tab.classList.toggle('active', isActive);
-        tab.setAttribute('aria-selected', isActive);
-      });
-    }
-
-    if (tPrevBtn) {
-      tPrevBtn.addEventListener('click', () => {
-        showTestimonial(currentTIndex - 1);
-        resetTTimer();
-      });
-    }
-
-    if (tNextBtn) {
-      tNextBtn.addEventListener('click', () => {
-        showTestimonial(currentTIndex + 1);
-        resetTTimer();
-      });
-    }
-
-    tTabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const idx = parseInt(tab.getAttribute('data-tab'), 10);
-        if (!isNaN(idx)) {
-          showTestimonial(idx);
-          resetTTimer();
-        }
-      });
-    });
-
-    function resetTTimer() {
-      clearInterval(tTimer);
-      tTimer = setInterval(() => {
-        showTestimonial(currentTIndex + 1);
-      }, 7000);
-    }
-
-    resetTTimer();
-
-    if (tSliderWrap) {
-      tSliderWrap.addEventListener('mouseenter', () => clearInterval(tTimer));
-      tSliderWrap.addEventListener('mouseleave', resetTTimer);
-    }
-  }
-
-  /* -------------------------------------------------------------------------
-     8. OTHER BUSINESS VERTICALS (SATTVA-STYLE ARCHITECTURAL SLIDER)
-     ------------------------------------------------------------------------- */
-  const verticalsTrack = document.getElementById('verticalsTrack');
-  const verticalsPrev = document.getElementById('verticalsPrev');
-  const verticalsNext = document.getElementById('verticalsNext');
-  const verticalsDotsContainer = document.getElementById('verticalsDots');
-
-  if (verticalsTrack && verticalsPrev && verticalsNext) {
-    const cards = verticalsTrack.querySelectorAll('.vertical-card');
-    const dots = verticalsDotsContainer ? verticalsDotsContainer.querySelectorAll('.verticals-dot') : [];
-
-    function getCardStep() {
-      if (cards.length === 0) return 340;
-      const firstCard = cards[0];
-      const gap = parseFloat(getComputedStyle(verticalsTrack).gap) || 28;
-      return firstCard.offsetWidth + gap;
-    }
-
-    function updateActiveDot() {
-      if (!dots.length) return;
-      const scrollLeft = verticalsTrack.scrollLeft;
-      const step = getCardStep();
-      const activeIdx = Math.min(Math.round(scrollLeft / step), dots.length - 1);
-
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === activeIdx);
-      });
-    }
-
-    verticalsNext.addEventListener('click', () => {
-      const step = getCardStep();
-      verticalsTrack.scrollBy({ left: step, behavior: 'smooth' });
-    });
-
-    verticalsPrev.addEventListener('click', () => {
-      const step = getCardStep();
-      verticalsTrack.scrollBy({ left: -step, behavior: 'smooth' });
-    });
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        const step = getCardStep();
-        verticalsTrack.scrollTo({ left: i * step, behavior: 'smooth' });
-      });
-    });
-
-    verticalsTrack.addEventListener('scroll', () => {
-      updateActiveDot();
-    }, { passive: true });
-  }
 });
